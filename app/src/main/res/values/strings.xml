@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">RewardsPointsApp</string>
+
+    <string name="activity_settings_name">设置</string>
+    <string name="activity_volume_settings_name">声音设置</string>
+    <string name="activity_senior_settings_name">高级设置</string>
+
 </resources>

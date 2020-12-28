@@ -2,20 +2,52 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cn.zxd.app">
 
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <application
+        android:name=".AppApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.RewardsPointsApp">
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".ui.MainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.RewardsPointsApp.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.SettingsActivity"
+            android:label="@string/activity_settings_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.RewardsPointsApp.TitleBarBack" />
+        <activity
+            android:name=".ui.VolumeActivity"
+            android:label="@string/activity_volume_settings_name"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.SeniorSettingsActivity"
+            android:label="@string/activity_senior_settings_name"
+            android:screenOrientation="portrait" />
+
+        <receiver
+            android:name=".receiver.BootCompletedReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter android:priority="1000">
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".service.VMDaemonService"
+            android:process=":daemon" />
     </application>
 
 </manifest>

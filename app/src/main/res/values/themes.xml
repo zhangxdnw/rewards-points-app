@@ -13,4 +13,16 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="Theme.RewardsPointsApp.Fullscreen" parent="Theme.RewardsPointsApp">
+        <item name="android:windowFullscreen">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+
+    <style name="Theme.RewardsPointsApp.TitleBarBack" parent="Theme.RewardsPointsApp">
+        <item name="android:homeAsUpIndicator">@android:drawable/arrow_down_float</item>
+    </style>
+
 </resources>
