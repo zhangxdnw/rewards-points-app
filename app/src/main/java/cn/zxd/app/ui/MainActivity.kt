@@ -4,16 +4,19 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import cn.zxd.app.R
+import cn.zxd.app.databinding.ActivityMainBinding
 import cn.zxd.app.service.VMDaemonService
 
 class MainActivity : BaseActivity() {
 
-    val clickMax = 1;
-    var clickCount = 0;
+    lateinit var dataBinding:ActivityMainBinding
+    private val clickMax = 1
+    private var clickCount = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        dataBinding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(dataBinding.root)
         startService(Intent(this, VMDaemonService::class.java))
     }
 
