@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import cn.zxd.app.R
 import cn.zxd.app.databinding.ActivityMainBinding
+import cn.zxd.app.net.ApiUtils
 import cn.zxd.app.service.VMDaemonService
 
 class MainActivity : BaseActivity() {

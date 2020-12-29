@@ -2,7 +2,16 @@
     <string name="app_name">RewardsPointsApp</string>
 
     <string name="activity_settings_name">设置</string>
+
+
+
     <string name="activity_volume_settings_name">声音设置</string>
+
+
     <string name="activity_senior_settings_name">高级设置</string>
+    <string name="server_host">服务器地址</string>
+    <string name="api_key">API_KEY</string>
+    <string name="save">保存</string>
+    <string name="volume">声音</string>
 
 </resources>

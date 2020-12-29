@@ -13,9 +13,6 @@ class VMDaemonService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Thread(Runnable {
-
-        })
         return super.onStartCommand(intent, flags, startId)
     }
 
