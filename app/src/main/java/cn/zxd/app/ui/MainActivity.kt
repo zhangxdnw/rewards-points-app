@@ -3,9 +3,11 @@ package cn.zxd.app.ui
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import cn.zxd.app.databinding.ActivityMainBinding
 import cn.zxd.app.service.VMDaemonService
 import cn.zxd.app.work.FaceDetectWork
+import com.hjimi.api.iminect.ImiDevice
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -20,13 +22,18 @@ class MainActivity : BaseActivity() {
         dataBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(dataBinding.root)
         startService(Intent(this, VMDaemonService::class.java))
-    }
+        FaceDetectWork.cameraInit(object : ImiDevice.OpenDeviceListener {
+            override fun onOpenDeviceSuccess() {
+                GlobalScope.launch {
+                    FaceDetectWork.detectingFace()
+                }
+            }
 
-    override fun onStart() {
-        super.onStart()
-        GlobalScope.launch {
-            FaceDetectWork.detectingFace()
-        }
+            override fun onOpenDeviceFailed(p0: String?) {
+                Toast.makeText(this@MainActivity, p0, Toast.LENGTH_SHORT).show()
+            }
+
+        })
     }
 
     override fun onStop() {
