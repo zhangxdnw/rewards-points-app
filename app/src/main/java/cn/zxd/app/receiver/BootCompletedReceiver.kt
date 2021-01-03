@@ -10,10 +10,10 @@ import cn.zxd.app.service.VMDaemonService
 class BootCompletedReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context?, intent: Intent?) {
-        if (intent!!.action.equals("android.intent.action.BOOT_COMPLETED")) {
-            context!!.startActivity(Intent(context, MainActivity::class.java))
-            context.startService(Intent(context, VMDaemonService::class.java))
-        }
+//        if (intent!!.action.equals("android.intent.action.BOOT_COMPLETED")) {
+//            context!!.startActivity(Intent(context, MainActivity::class.java))
+//            context.startService(Intent(context, VMDaemonService::class.java))
+//        }
     }
 
 }

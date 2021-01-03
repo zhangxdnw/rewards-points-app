@@ -7,9 +7,9 @@
     tools:context=".ui.MainActivity">
 
     <View
-        android:onClick="clickToSettings"
         android:layout_width="300px"
         android:layout_height="300px"
+        android:onClick="clickToSettings"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -28,6 +28,22 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/rl_bottomBanner"
         app:layout_constraintTop_toTopOf="parent">
+
+        <cn.zxd.app.ui.view.camera.GLPanel
+            android:id="@+id/glp_color"
+            android:layout_width="640px"
+            android:layout_height="480px" />
+
+        <cn.zxd.app.ui.view.face.FaceRectView
+            android:id="@+id/frv_faceRect"
+            android:layout_width="640px"
+            android:layout_height="480px" />
+
+        <cn.zxd.app.ui.view.camera.GLPanel
+            android:id="@+id/glp_ir"
+            android:layout_width="640px"
+            android:layout_height="480px"
+            android:layout_marginTop="640px" />
 
         <ImageView
             android:layout_width="match_parent"
