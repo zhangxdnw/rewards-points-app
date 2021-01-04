@@ -39,7 +39,7 @@ class MainActivity : BaseActivity() {
     lateinit var dataBinding: ActivityMainBinding
     private val clickMax = 1
     private var clickCount = 0
-    val frameMode = ImiDevice.getInstance().getCurrentFrameMode(ImiDevice.ImiStreamType.COLOR)
+//    val frameMode = ImiDevice.getInstance().getCurrentFrameMode(ImiDevice.ImiStreamType.COLOR)
     val drawHelper = DrawHelper(640, 480, 640, 480, 0, 0, false, false, false)
 
     val faceDelay = 5000L
@@ -71,33 +71,33 @@ class MainActivity : BaseActivity() {
             Glide.with(this).load(serverData!!.banner.url).into(dataBinding.ivBottomBanner)
         }
         EventBus.getDefault().register(this)
-        FaceDetectWork.detectInit()
+//        FaceDetectWork.detectInit()
         supportFragmentManager.inTransaction { add(R.id.rl_topBanner, mainFragment) }
     }
 
     override fun onStart() {
         super.onStart()
-        FaceDetectWork.cameraInit(object : ImiDevice.OpenDeviceListener {
-            override fun onOpenDeviceSuccess() {
-                GlobalScope.launch {
-                    FaceDetectWork.canceled = false
-                    FaceDetectWork.detectingFace()
-                }
-            }
-
-            override fun onOpenDeviceFailed(p0: String?) {
-                Log.e("FaceDetectWork", "onOpenDeviceFailed:$p0")
-                Toast.makeText(this@MainActivity.applicationContext, p0, Toast.LENGTH_SHORT).show()
-            }
-
-        })
+//        FaceDetectWork.cameraInit(object : ImiDevice.OpenDeviceListener {
+//            override fun onOpenDeviceSuccess() {
+//                GlobalScope.launch {
+//                    FaceDetectWork.canceled = false
+//                    FaceDetectWork.detectingFace()
+//                }
+//            }
+//
+//            override fun onOpenDeviceFailed(p0: String?) {
+//                Log.e("FaceDetectWork", "onOpenDeviceFailed:$p0")
+//                Toast.makeText(this@MainActivity.applicationContext, p0, Toast.LENGTH_SHORT).show()
+//            }
+//
+//        })
     }
 
     override fun onStop() {
         super.onStop()
-        FaceDetectWork.canceled = true
-        FaceDetectWork.cameraDeInit()
-        FaceDetectWork.detectDeInit()
+//        FaceDetectWork.canceled = true
+//        FaceDetectWork.cameraDeInit()
+//        FaceDetectWork.detectDeInit()
     }
 
 
@@ -137,19 +137,19 @@ class MainActivity : BaseActivity() {
         when (frame.type) {
             0 -> {
                 if (dataBinding.glpColor.visibility != View.VISIBLE) return
-                when (frameMode.format) {
-                    ImiPixelFormat.IMI_PIXEL_FORMAT_IMAGE_YUV420SP, ImiPixelFormat.IMI_PIXEL_FORMAT_IMAGE_RGB24 -> {
-                        dataBinding.glpColor.paint(
-                            null,
-                            frame.frame.data,
-                            frame.frame.width,
-                            frame.frame.height
-                        )
-                    }
-                    else -> {
-                        Log.e("MainActivity", "Format NOT support")
-                    }
-                }
+//                when (frameMode.format) {
+//                    ImiPixelFormat.IMI_PIXEL_FORMAT_IMAGE_YUV420SP, ImiPixelFormat.IMI_PIXEL_FORMAT_IMAGE_RGB24 -> {
+//                        dataBinding.glpColor.paint(
+//                            null,
+//                            frame.frame.data,
+//                            frame.frame.width,
+//                            frame.frame.height
+//                        )
+//                    }
+//                    else -> {
+//                        Log.e("MainActivity", "Format NOT support")
+//                    }
+//                }
             }
         }
     }

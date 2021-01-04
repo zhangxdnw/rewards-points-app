@@ -19,7 +19,7 @@ android {
         manifestPlaceholders = [BUGLY_APPID      : "4bbfa4b827",
                                 BUGLY_APP_VERSION: app_build_version]
 
-        buildConfigField("String", "BaseHost", "\"\"")
+        buildConfigField("String", "BaseHost", "\"8.135.63.236:5678\"")
         buildConfigField("String", "ApiKey", "\"\"")
 
         ndk {

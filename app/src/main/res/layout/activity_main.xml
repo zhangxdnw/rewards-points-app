@@ -6,13 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.MainActivity">
 
-    <View
-        android:layout_width="300px"
-        android:layout_height="300px"
-        android:onClick="clickToSettings"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <RelativeLayout
         android:id="@+id/rl_bottomBanner"
         android:layout_width="match_parent"
@@ -59,6 +52,13 @@
         app:layout_constraintBottom_toTopOf="@+id/rl_bottomBanner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:layout_width="300px"
+        android:layout_height="300px"
+        android:onClick="clickToSettings"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
