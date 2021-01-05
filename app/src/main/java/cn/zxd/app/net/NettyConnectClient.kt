@@ -18,7 +18,7 @@ class NettyConnectClient private constructor(val host: String, val tcp_port: Int
 
     private lateinit var group: EventLoopGroup
 
-    private lateinit var listener: NettyClientListener<String>
+    private lateinit var listener: NettyClientListener<ClientPacket>
 
     private var channel: Channel? = null
 
@@ -104,8 +104,8 @@ class NettyConnectClient private constructor(val host: String, val tcp_port: Int
                                 ) //5s未发送数据，回调userEventTriggered
                             }
 
-                            ch.pipeline().addLast(StringEncoder(CharsetUtil.UTF_8))
-                            ch.pipeline().addLast(StringDecoder(CharsetUtil.UTF_8))
+                            ch.pipeline().addLast("NettyEncoder", NettyEncoder())
+                            ch.pipeline().addLast("NettyDecoder", NettyDecoder())
                             ch.pipeline().addLast(LineBasedFrameDecoder(1024))//黏包处理,需要客户端、服务端配合
                             ch.pipeline().addLast(
                                 NettyClientHandler(
@@ -179,13 +179,13 @@ class NettyConnectClient private constructor(val host: String, val tcp_port: Int
      * @param listener 发送结果回调
      * @return 方法执行结果
      */
-    fun sendMsgToServer(data: String, listener: MessageStateListener) = channel?.run {
+    fun sendMsgToServer(data: ClientPacket, listener: MessageStateListener) = channel?.run {
 
-        val flag = this != null && connectStatus
+        val flag = connectStatus
 
         if (flag) {
 
-            this.writeAndFlush(data + System.getProperty("line.separator"))
+            this.writeAndFlush(data)
                 .addListener { channelFuture -> listener.isSendSuccess(channelFuture.isSuccess) }
         }
 
@@ -199,13 +199,13 @@ class NettyConnectClient private constructor(val host: String, val tcp_port: Int
      * @param data 要发送的数据
      * @return 方法执行结果
      */
-    fun sendMsgToServer(data: String) = channel?.run {
+    fun sendMsgToServer(data: ClientPacket) = channel?.run {
 
-        val flag = this != null && connectStatus
+        val flag = connectStatus
 
         if (flag) {
 
-            val channelFuture = this.writeAndFlush(data + System.getProperty("line.separator"))
+            val channelFuture = this.writeAndFlush(data)
                 .awaitUninterruptibly()
             return channelFuture.isSuccess
         }
@@ -214,7 +214,7 @@ class NettyConnectClient private constructor(val host: String, val tcp_port: Int
 
     } ?: false
 
-    fun setListener(listener: NettyClientListener<String>) {
+    fun setListener(listener: NettyClientListener<ClientPacket>) {
         this.listener = listener
     }
 

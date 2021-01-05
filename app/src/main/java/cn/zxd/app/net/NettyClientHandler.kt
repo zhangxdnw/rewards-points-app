@@ -8,11 +8,11 @@ import io.netty.handler.timeout.IdleState
 import io.netty.handler.timeout.IdleStateEvent
 
 class NettyClientHandler(
-    private val listener: NettyClientListener<String>,
+    private val listener: NettyClientListener<ClientPacket>,
     private val index: Int,
     private val isSendHeartBeat: Boolean,
     private val heartBeatData: Any?
-) : SimpleChannelInboundHandler<String>() {
+) : SimpleChannelInboundHandler<ClientPacket>() {
 
     /**
      *
@@ -83,7 +83,7 @@ class NettyClientHandler(
      * @param channelHandlerContext ChannelHandlerContext
      * @param msg                   消息
      */
-    override fun channelRead0(channelHandlerContext: ChannelHandlerContext, msg: String) {
+    override fun channelRead0(channelHandlerContext: ChannelHandlerContext, msg: ClientPacket) {
 
         Log.d(TAG, "channelRead0:")
         listener.onMessageResponseClient(msg, index)
