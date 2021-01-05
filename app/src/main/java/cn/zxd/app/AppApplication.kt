@@ -15,7 +15,7 @@ class AppApplication : Application() {
         super.onCreate()
         instance = this
 
-        CrashReport.initCrashReport(this)
+//        CrashReport.initCrashReport(this)
 //        ImiNect.initialize()
     }
 }

@@ -89,7 +89,6 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 
-    //log4j
-    implementation 'org.slf4j:slf4j-api:1.7.30'
-    implementation 'org.slf4j:slf4j-android:1.7.30'
+    //netty
+    implementation 'io.netty:netty-all:4.1.56.Final'
 }
