@@ -3,12 +3,7 @@ package cn.zxd.app.ui
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import com.arcsoft.face.ActiveFileInfo
-import com.arcsoft.face.ErrorInfo
-import com.arcsoft.face.FaceEngine
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
+import cn.zxd.app.net.ApiUtils
 
 class SplashActivity : BaseActivity() {
 
