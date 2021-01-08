@@ -3,10 +3,6 @@ package cn.zxd.app.ui
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
-import cn.zxd.app.net.ApiUtils
-import cn.zxd.app.net.ConnectState
-import cn.zxd.app.net.NettyClientListener
-import cn.zxd.app.net.NettyConnectClient
 
 class SplashActivity : BaseActivity() {
 
@@ -14,21 +10,6 @@ class SplashActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        val client = NettyConnectClient.Builder().setHost(ApiUtils.baseUrl).setTcpPort(5678).build()
-//        client.setListener(object : NettyClientListener<String> {
-//            override fun onMessageResponseClient(msg: String, index: Int) {
-//
-//            }
-//
-//            override fun onClientStatusConnectChanged(statusCode: Int, index: Int) {
-//                when (statusCode == ConnectState.STATUS_CONNECT_SUCCESS) {
-//                    //login
-//                    //client.sendMsgToServer()
-//                }
-//            }
-//
-//        })
-//        client.connect()
     }
 
     override fun onStart() {
