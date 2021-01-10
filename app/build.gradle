@@ -19,8 +19,8 @@ android {
         manifestPlaceholders = [BUGLY_APPID      : "4bbfa4b827",
                                 BUGLY_APP_VERSION: app_build_version]
 
-        buildConfigField("String", "BaseHost", "\"8.135.63.236\"")
-        buildConfigField("String", "ApiKey", "\"MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC8XUd5AA/Q6UlUJBItb8m9KNOhSHbiQw3XyRpM/eWO7J/m/PBp1uEcrBs9HpY6uC6ZkIQThI7BFQgvrTfaxn/FY/A2piy75P+7+YyE+ykwHWgT8ELM+bYtm1FRN0gVqV8K1vjS63zFQ+oKfoD9rb+YmD4o2ieBkDzZCa+qo9yuCQIDAQAB\"")
+        buildConfigField("String", "BaseHost", "\"http://8.135.63.236\"")
+        buildConfigField("String", "ApiKey", "\"APP_KEY\"")
 
         ndk {
             // 设置支持的SO库架构
@@ -90,5 +90,5 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 
     //netty socket-io
-    implementation 'com.corundumstudio.socketio:netty-socketio:1.7.12'
+    implementation 'io.socket:socket.io-client:1.0.0'
 }

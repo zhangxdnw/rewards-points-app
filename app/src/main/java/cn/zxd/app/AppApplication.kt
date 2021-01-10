@@ -2,6 +2,7 @@ package cn.zxd.app
 
 import android.app.Application
 import cn.zxd.app.net.ApiUtils
+import cn.zxd.app.net.NettyClient
 
 class AppApplication : Application() {
 
@@ -13,7 +14,6 @@ class AppApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
-//        CrashReport.initCrashReport(this)
-//        ImiNect.initialize()
+        NettyClient.start(ApiUtils.baseUrl)
     }
 }
