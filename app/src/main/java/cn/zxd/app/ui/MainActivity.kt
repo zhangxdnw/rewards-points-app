@@ -16,6 +16,7 @@ import cn.zxd.app.databinding.ActivityMainBinding
 import cn.zxd.app.net.AdvertiseRequest
 import cn.zxd.app.net.HttpClient
 import cn.zxd.app.ui.fragment.CouponFragment
+import cn.zxd.app.ui.fragment.FaceDetectFragment
 import cn.zxd.app.ui.fragment.MainFragment
 import cn.zxd.app.ui.fragment.RewardsFragment
 import cn.zxd.app.ui.view.face.model.DrawInfo
@@ -45,7 +46,8 @@ class MainActivity : BaseActivity() {
     lateinit var dataBinding: ActivityMainBinding
     private val clickMax = 1
     private var clickCount = 0
-//    val frameMode = ImiDevice.getInstance().getCurrentFrameMode(ImiDevice.ImiStreamType.COLOR)
+
+    //    val frameMode = ImiDevice.getInstance().getCurrentFrameMode(ImiDevice.ImiStreamType.COLOR)
     val drawHelper = DrawHelper(640, 480, 640, 480, 0, 0, false, false, false)
 
     val faceDelay = 5000L
@@ -73,7 +75,7 @@ class MainActivity : BaseActivity() {
             serverDataStr,
             Advertisement::class.java
         ) else null
-        if (serverData!= null) {
+        if (serverData != null) {
             Glide.with(this).load(serverData!!.bottom.path).into(dataBinding.ivBottomBanner)
         }
         EventBus.getDefault().register(this)
@@ -116,6 +118,10 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    fun clickToFaceDetect(line: Int, data: Any) {
+        transFragment(FaceDetectFragment(line, data))
+    }
+
     var count: Int = 0
 
     fun openFaceDetect() {
@@ -124,19 +130,10 @@ class MainActivity : BaseActivity() {
     }
 
     fun closeFaceDetect() {
-
     }
 
     fun transFragment(fragment: Fragment) {
         supportFragmentManager.inTransaction { replace(R.id.rl_topBanner, fragment) }
-    }
-
-    fun clickToTest(view: View) {
-        if (count++ % 2 == 0) {
-            transFragment(couponFragment)
-        } else {
-            transFragment(rewardsFragment)
-        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN_ORDERED)
@@ -193,7 +190,13 @@ class MainActivity : BaseActivity() {
 //        }
     }
 
-    fun clickToGetAd(view: View) {
-
+    fun clickToCollectCoupon(view: View) {
+        transFragment(couponFragment)
     }
+
+    fun clickToRewardsPoint(view: View) {
+        transFragment(rewardsFragment)
+    }
+
+
 }

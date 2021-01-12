@@ -18,9 +18,9 @@ object ApiUtils {
 
     const val rewardsPointApi = "/api/member/face/score"
 
-    const val getCardApi = "/api/member/face/card"
+    const val collectCouponApi = "/api/member/face/card"
 
-    const val cardInfoApi = "/api/card/gefromcrm"
+    const val couponApi = "/api/card/gefromcrm"
 
 }
 
@@ -32,7 +32,7 @@ open class Response<T>(var code: Int = -1, val message: String, val data: T)
 class AdvertiseRequest(equipment: String, var t: Int = 0) : Request(equipment)
 
 data class AdvertiseInformation(
-    val seconds: Int,
+    val seconds: Double,
     val ordering: Int,
     val describe: String,
     val type: Int,
@@ -98,7 +98,7 @@ class FaceCardResponse(code: Int, message: String, data: FaceCardResponseData) :
     Response<FaceCardResponseData>(code, message, data)
 
 //APP拉取优惠券
-data class GetCardsResponseData(
+data class CouponResponseData(
     val card_id: String,
     val card_type: Int,
     val card_title: String,
@@ -107,5 +107,5 @@ data class GetCardsResponseData(
     val message: String
 )
 
-class GetCardsResponse(code: Int, message: String, data: GetCardsResponseData) :
-    Response<GetCardsResponseData>(code, message, data)
+class CouponResponse(code: Int, message: String, data: CouponResponseData) :
+    Response<CouponResponseData>(code, message, data)

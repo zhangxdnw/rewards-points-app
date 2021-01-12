@@ -17,7 +17,6 @@
             android:id="@+id/iv_bottomBanner"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:onClick="clickToTest"
             android:src="@drawable/banner" />
 
         <View
@@ -29,7 +28,7 @@
             android:id="@+id/button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="clickToGetAd"
+            android:onClick="clickToCollectCoupon"
             android:text="Button" />
 
         <Button
@@ -37,21 +36,7 @@
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Button" />
-
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Button"
-            android:layout_alignParentBottom="true"/>
-
-        <Button
-            android:id="@+id/button4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
+            android:onClick="clickToRewardsPoint"
             android:text="Button" />
 
     </RelativeLayout>
@@ -81,13 +66,6 @@
         app:layout_constraintBottom_toTopOf="@+id/rl_bottomBanner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <View
-        android:layout_width="300px"
-        android:layout_height="300px"
-        android:onClick="clickToSettings"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

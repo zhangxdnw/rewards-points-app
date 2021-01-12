@@ -1,10 +1,7 @@
 package cn.zxd.app.net
 
 import android.util.Log
-import cn.zxd.app.util.MD5Utils
-import cn.zxd.app.util.RSAUtils
-import cn.zxd.app.util.RandomUtils
-import cn.zxd.app.util.getSerial
+import cn.zxd.app.util.*
 import io.socket.client.IO
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
@@ -88,9 +85,17 @@ object NettyClient {
             val pushCommand = PushCommand.fromJsonObject(args[0] as JSONObject)
             Log.d(TAG, "客户端收到来自服务端响应数据:${pushCommand.toJsonString()}")
             when (pushCommand.action) {
-                "CM_UPDATE" -> Log.d(TAG, "收到更新广告通知")
-                "CARD_UPDATE" -> Log.d(TAG, "收到更新卡券通知")
-                "NOTICE" -> Log.d(TAG, "收到普通服务端 /api/socketio/send JSON格式内容 消息")
+                "CM_UPDATE" -> {
+                    Log.d(TAG, "收到更新广告通知")
+                    ActionUtils.doRequestAdvertise()
+                }
+                "CARD_UPDATE" -> {
+                    Log.d(TAG, "收到更新卡券通知")
+                    ActionUtils.doRequestAdvertise()
+                }
+                "NOTICE" -> {
+                    Log.d(TAG, "收到普通服务端 /api/socketio/send JSON格式内容 消息")
+                }
                 else -> Log.d(TAG, "收到")
             }
         }).on(

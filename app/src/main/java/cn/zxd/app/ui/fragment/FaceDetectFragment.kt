@@ -5,7 +5,7 @@ import cn.zxd.app.R
 import cn.zxd.app.databinding.FragmentFaceDetectBinding
 import cn.zxd.app.ui.MainActivity
 
-class FaceDetectFragment(private val line: Int) :
+class FaceDetectFragment(private val line: Int, private val data: Any) :
     BaseFragment<FragmentFaceDetectBinding>(R.layout.fragment_face_detect) {
 
     override fun initBinding(view: View): FragmentFaceDetectBinding {
@@ -14,7 +14,7 @@ class FaceDetectFragment(private val line: Int) :
 
     override fun initView() {
         binding.root.setOnClickListener {
-            (activity as MainActivity).transFragment(RequestLoadingFragment(line))
+            (activity as MainActivity).transFragment(RequestLoadingFragment(line, data))
         }
     }
 
