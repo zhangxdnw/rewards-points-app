@@ -30,8 +30,8 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
             dataList.add(ImageDataBean(1, 0, R.drawable.image4, ""))
             binding.bAd.adapter.notifyDataSetChanged()
         } else {
-            for (url in serverData.page.image) {
-                dataList.add(ImageDataBean(serverData.id, 1, 0, url))
+            for (ad in serverData.top.adList) {
+                dataList.add(ImageDataBean(1, 1, 0, ad.path))
             }
         }
     }

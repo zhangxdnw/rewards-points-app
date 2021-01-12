@@ -13,6 +13,8 @@ import androidx.fragment.app.FragmentTransaction
 import cn.zxd.app.R
 import cn.zxd.app.bean.Advertisement
 import cn.zxd.app.databinding.ActivityMainBinding
+import cn.zxd.app.net.AdvertiseRequest
+import cn.zxd.app.net.HttpClient
 import cn.zxd.app.ui.fragment.CouponFragment
 import cn.zxd.app.ui.fragment.MainFragment
 import cn.zxd.app.ui.fragment.RewardsFragment
@@ -28,9 +30,13 @@ import com.hjimi.api.iminect.ImiDevice
 import com.hjimi.api.iminect.ImiPixelFormat
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.Response
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import java.io.IOException
 import java.util.*
 
 
@@ -68,9 +74,10 @@ class MainActivity : BaseActivity() {
             Advertisement::class.java
         ) else null
         if (serverData!= null) {
-            Glide.with(this).load(serverData!!.banner.url).into(dataBinding.ivBottomBanner)
+            Glide.with(this).load(serverData!!.bottom.path).into(dataBinding.ivBottomBanner)
         }
         EventBus.getDefault().register(this)
+
 //        FaceDetectWork.detectInit()
         supportFragmentManager.inTransaction { add(R.id.rl_topBanner, mainFragment) }
     }
@@ -184,5 +191,9 @@ class MainActivity : BaseActivity() {
 //            firstFace = 0;
 //
 //        }
+    }
+
+    fun clickToGetAd(view: View) {
+
     }
 }

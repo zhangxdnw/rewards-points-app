@@ -1,21 +1,9 @@
 package cn.zxd.app.bean
 
-data class Advertisement(
-    val banner: Banner,
-    val describe: String,
-    val id: Long,
-    val name: String,
-    val order: Int,
-    val page: Page
-)
+data class Advertisement(val top: Top, val bottom: Bottom)
 
-data class Banner(
-    val url: String
-)
+data class Bottom(val path: String)
 
-data class Page(
-    val image: List<String>,
-    val imageInterval: Int,
-    val type: String,
-    val videoUrl: String
-)
+data class Ad(val isRes: Boolean, val isVideo: Boolean, val resId: Int, val path: String)
+
+data class Top(val adList: List<Ad>)
