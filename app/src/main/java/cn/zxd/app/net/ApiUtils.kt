@@ -24,12 +24,12 @@ object ApiUtils {
 
 }
 
-open class Request(val equipment: String)
+open class Request(val equipmentId: String)
 
 open class Response<T>(var code: Int = -1, val message: String, val data: T)
 
 //广告接口
-class AdvertiseRequest(equipment: String, var t: Int = 0) : Request(equipment)
+class AdvertiseRequest(equipmentId: String, var t: Int = 0) : Request(equipmentId)
 
 data class AdvertiseInformation(
     val seconds: Double,
@@ -63,12 +63,12 @@ class AppImageResponse(code: Int, message: String, data: AppImageResponseData) :
 
 //人脸积分接口
 class FaceScoreRequest(
-    equipment: String, val orderNum: String,
+    equipmentId: String, val orderNum: String,
     val totalPrice: Double, val shopCode: String,
     val colorImage: String,
     var depthImage: String? = null,
     var irImage: String? = null
-) : Request(equipment)
+) : Request(equipmentId)
 
 data class FaceScoreResponseData(
     val name: String,
@@ -82,14 +82,14 @@ class FaceScoreResponse(code: Int, message: String, data: FaceScoreResponseData)
 
 //人脸领取优惠券
 class FaceCardRequest(
-    equipment: String, val cardId: String, val colorImage: String,
+    equipmentId: String, val cardId: String, val colorImage: String,
     var depthImage: String? = null,
     var irImage: String? = null
-) : Request(equipment)
+) : Request(equipmentId)
 
 data class FaceCardResponseData(
-    val card_title: String,
-    val card_url: String,
+    val cardTitle: String,
+    val cardUrl: String,
     val url: String,
     val message: String
 )

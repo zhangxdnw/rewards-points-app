@@ -93,4 +93,10 @@ dependencies {
 
     //netty socket-io
     implementation 'io.socket:socket.io-client:1.0.0'
+
+    //zxing
+    implementation 'com.google.zxing:core:3.4.1'
+    implementation('com.journeyapps:zxing-android-embedded:4.1.0') {
+        exclude module:'legacy-support-v4'
+    }
 }

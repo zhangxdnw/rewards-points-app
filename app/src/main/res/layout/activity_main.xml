@@ -28,16 +28,16 @@
             android:id="@+id/button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="clickToCollectCoupon"
-            android:text="Button" />
+            android:onClick="clickToRewardsPoint"
+            android:text="积分" />
 
         <Button
             android:id="@+id/button2"
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="clickToRewardsPoint"
-            android:text="Button" />
+            android:onClick="clickToCollectCoupon"
+            android:text="领券" />
 
     </RelativeLayout>
 

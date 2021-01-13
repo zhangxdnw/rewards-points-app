@@ -1,6 +1,5 @@
 package cn.zxd.app.net
 
-import com.alibaba.fastjson.JSON
 import com.google.gson.Gson
 import okhttp3.*
 import okhttp3.Request
@@ -32,20 +31,20 @@ object HttpClient {
 
     fun getAdvertise(request: AdvertiseRequest, callback: Callback) {
         val params = HashMap<String, String>()
-        params["equipmentId"] = request.equipment
+        params["equipmentId"] = request.equipmentId
         params["t"] = request.t.toString()
         get(ApiUtils.baseUrl + HTTP_PORT + ApiUtils.advertiseApi, params, callback)
     }
 
     fun getCoupon(request: cn.zxd.app.net.Request, callback: Callback) {
         val params = HashMap<String, String>()
-        params["equipmentId"] = request.equipment
+        params["equipmentId"] = request.equipmentId
         get(ApiUtils.baseUrl + HTTP_PORT + ApiUtils.couponApi, params, callback)
     }
 
     fun postFaceCard(request: FaceCardRequest, callback: Callback) {
         val formBody = FormBody.create(
-            MediaType.parse("application/json; charset=utf-8"), Gson().toJson(request)
+            MediaType.parse("application/json"), Gson().toJson(request)
         )
         post(ApiUtils.baseUrl + HTTP_PORT + ApiUtils.collectCouponApi, formBody, callback)
     }
