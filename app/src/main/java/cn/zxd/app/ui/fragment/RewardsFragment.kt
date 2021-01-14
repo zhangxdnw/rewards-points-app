@@ -3,24 +3,25 @@ package cn.zxd.app.ui.fragment
 import android.view.View
 import cn.zxd.app.R
 import cn.zxd.app.databinding.FragmentRewordsBinding
-import cn.zxd.app.work.RewardsPointData
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
+import cn.zxd.app.net.FacePointPushData
+import cn.zxd.app.ui.MainActivity
 
 class RewardsFragment : BaseFragment<FragmentRewordsBinding>(R.layout.fragment_rewords) {
+
+    var info: FacePointPushData? = null
+
     override fun initBinding(view: View): FragmentRewordsBinding {
         return FragmentRewordsBinding.bind(view)
     }
 
     override fun initView() {
-        EventBus.getDefault().register(this)
+        binding.btnRewardsPoint.setOnClickListener {
+            (info != null).let {
+                (activity as MainActivity).clickToFaceDetect(0, info!!)
+            }
+        }
     }
 
     override fun loadDate() {
-    }
-
-    @Subscribe
-    fun showInfo(data: RewardsPointData) {
-
     }
 }

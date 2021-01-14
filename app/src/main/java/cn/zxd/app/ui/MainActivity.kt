@@ -14,6 +14,7 @@ import cn.zxd.app.R
 import cn.zxd.app.bean.Advertisement
 import cn.zxd.app.databinding.ActivityMainBinding
 import cn.zxd.app.net.AdvertiseRequest
+import cn.zxd.app.net.FacePointPushData
 import cn.zxd.app.net.HttpClient
 import cn.zxd.app.ui.fragment.CouponFragment
 import cn.zxd.app.ui.fragment.FaceDetectFragment
@@ -189,9 +190,9 @@ class MainActivity : BaseActivity() {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun toRewardsPoint(data: String) {
+    fun toRewardsPoint(data: RewardsPoint) {
+        rewardsFragment.info = FacePointPushData.fromJsonObject(data.message)
         transFragment(rewardsFragment)
-        EventBus.getDefault().post(RewardsPointData(data))
     }
 
     fun clickToCollectCoupon(view: View) {

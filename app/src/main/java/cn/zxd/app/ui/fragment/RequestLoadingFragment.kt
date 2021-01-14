@@ -5,10 +5,7 @@ import android.view.View
 import android.widget.Toast
 import cn.zxd.app.R
 import cn.zxd.app.databinding.FragmentRequestLoadingBinding
-import cn.zxd.app.net.CouponResponseData
-import cn.zxd.app.net.FaceCardRequest
-import cn.zxd.app.net.FaceCardResponse
-import cn.zxd.app.net.FaceCardResponseData
+import cn.zxd.app.net.*
 import cn.zxd.app.ui.MainActivity
 import cn.zxd.app.util.ActionUtils
 import cn.zxd.app.util.getSerial
@@ -64,7 +61,29 @@ class RequestLoadingFragment(private val line: Int,private val imageData:String,
                     })
             }
             0 -> {
+                val pointInfo = data as FacePointPushData
+                ActionUtils.doRequestFacePoint(FacePointRequest(getSerial(),pointInfo.orderNum, pointInfo.totalPrice, pointInfo.shopCode, imageData ), object:Callback{
+                    override fun onFailure(call: Call, e: IOException) {
+                        Toast.makeText(context, "doRequestFacePoint失败", Toast.LENGTH_SHORT)
+                            .show()
+                    }
 
+                    override fun onResponse(call: Call, response: Response) {
+                        response.body()?.let {
+                            val realResponseString = it.string()
+                            Log.d(TAG, "doRequestFaceCard$realResponseString")
+                            val facePointResponse = Gson().fromJson(realResponseString, FacePointResponse::class.java)
+                            if (facePointResponse.data.url.isNullOrEmpty()) {
+                                //展示信息
+                                toRewardsResult(facePointResponse.data)
+                            } else {
+                                //显示二维码
+                                toQrCode(facePointResponse.data.url)
+                            }
+                        }
+                    }
+
+                })
             }
         }
     }
@@ -74,8 +93,8 @@ class RequestLoadingFragment(private val line: Int,private val imageData:String,
         (activity as MainActivity).transFragment(QrCodeFragment(url))
     }
 
-    fun toRewardsResult() {
-        (activity as MainActivity).transFragment(RewardsResultFragment())
+    fun toRewardsResult(data:FacePointResponseData) {
+        (activity as MainActivity).transFragment(RewardsResultFragment(data))
     }
 
     fun toCouponResult(data: FaceCardResponseData) {

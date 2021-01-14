@@ -48,4 +48,11 @@ object HttpClient {
         )
         post(ApiUtils.baseUrl + HTTP_PORT + ApiUtils.collectCouponApi, formBody, callback)
     }
+
+    fun postFacePoint(request: FacePointRequest, callback: Callback){
+        val formBody = FormBody.create(
+            MediaType.parse("application/json"), Gson().toJson(request)
+        )
+        post(ApiUtils.baseUrl + HTTP_PORT + ApiUtils.rewardsPointApi, formBody, callback)
+    }
 }

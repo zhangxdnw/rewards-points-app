@@ -62,7 +62,7 @@ class AppImageResponse(code: Int, message: String, data: AppImageResponseData) :
     Response<AppImageResponseData>(code, message, data)
 
 //人脸积分接口
-class FaceScoreRequest(
+class FacePointRequest(
     equipmentId: String, val orderNum: String,
     val totalPrice: Double, val shopCode: String,
     val colorImage: String,
@@ -70,15 +70,15 @@ class FaceScoreRequest(
     var irImage: String? = null
 ) : Request(equipmentId)
 
-data class FaceScoreResponseData(
+data class FacePointResponseData(
     val name: String,
     val score: Double,
     val url: String,
     val message: String
 )
 
-class FaceScoreResponse(code: Int, message: String, data: FaceScoreResponseData) :
-    Response<FaceScoreResponseData>(code, message, data)
+class FacePointResponse(code: Int, message: String, data: FacePointResponseData) :
+    Response<FacePointResponseData>(code, message, data)
 
 //人脸领取优惠券
 class FaceCardRequest(

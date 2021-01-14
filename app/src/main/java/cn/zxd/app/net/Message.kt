@@ -66,7 +66,13 @@ data class FacePointPushData(
 ) {
     companion object {
         fun fromJsonObject(data: String): FacePointPushData {
-            return JSON.parseObject(data, FacePointPushData::class.java)
+            val jsonObject = JSONObject(data)
+            return FacePointPushData(
+                jsonObject.getString("shopCode"),
+                jsonObject.getDouble("totalPrice"),
+                jsonObject.getString("orderNum"),
+                jsonObject.getString("equipmentId")
+            )
         }
     }
 

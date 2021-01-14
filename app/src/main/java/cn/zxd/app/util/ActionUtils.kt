@@ -74,7 +74,7 @@ object ActionUtils {
         HttpClient.postFaceCard(request, callback)
     }
 
-    fun doRequestFacePoint() {
-
+    fun doRequestFacePoint(request: FacePointRequest, callback: Callback) {
+        HttpClient.postFacePoint(request, callback)
     }
 }
