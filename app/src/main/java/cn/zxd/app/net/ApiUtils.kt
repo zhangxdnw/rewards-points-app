@@ -40,7 +40,7 @@ data class AdvertiseInformation(
 )
 
 data class AdvertiseResponseData(
-    val bottom: AdvertiseInformation,
+    val bottom: List<AdvertiseInformation>,
     val center: List<AdvertiseInformation>,
     val name: String,
     val id: Int,
@@ -48,8 +48,8 @@ data class AdvertiseResponseData(
     val order: Int
 )
 
-class AdvertiseResponse(code: Int, message: String, data: AdvertiseResponseData) :
-    Response<AdvertiseResponseData>(code, message, data)
+class AdvertiseResponse(code: Int, message: String, data: List<AdvertiseResponseData>) :
+    Response<List<AdvertiseResponseData>>(code, message, data)
 
 //APP图片更新(预留)
 data class AppImageResponseData(

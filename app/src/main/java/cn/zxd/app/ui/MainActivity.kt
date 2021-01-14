@@ -21,9 +21,7 @@ import cn.zxd.app.ui.fragment.MainFragment
 import cn.zxd.app.ui.fragment.RewardsFragment
 import cn.zxd.app.ui.view.face.model.DrawInfo
 import cn.zxd.app.ui.view.face.util.DrawHelper
-import cn.zxd.app.work.CameraFrame
-import cn.zxd.app.work.FaceDetectWork
-import cn.zxd.app.work.PreviewData
+import cn.zxd.app.work.*
 import com.alibaba.fastjson.JSON
 import com.arcsoft.face.FaceInfo
 import com.bumptech.glide.Glide
@@ -190,13 +188,13 @@ class MainActivity : BaseActivity() {
 //        }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun toRewardsPoint(data: String) {
+        transFragment(rewardsFragment)
+        EventBus.getDefault().post(RewardsPointData(data))
+    }
+
     fun clickToCollectCoupon(view: View) {
         transFragment(couponFragment)
     }
-
-    fun clickToRewardsPoint(view: View) {
-        transFragment(rewardsFragment)
-    }
-
-
 }

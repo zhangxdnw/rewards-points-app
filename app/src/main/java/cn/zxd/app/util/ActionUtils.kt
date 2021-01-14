@@ -27,9 +27,7 @@ object ActionUtils {
 
             override fun onResponse(call: Call, response: Response) {
                 response.body()?.let {
-//                    val realResponseString = it.string()
-                    val realResponseString =
-                        "{\"msg\":\"成功\",\"code\":0,\"data\":{\"bottom\":{\"seconds\":3.0,\"ordering\":10,\"describe\":\"广告资源1\",\"type\":1,\"url\":\"http://8.135.63.236/resource/advert//2021/01/08/f1e86786-290b-4533-a203-8972d40a6af4.jpg\"},\"center\":[{\"seconds\":3.0,\"ordering\":10,\"describe\":\"描述2\",\"type\":1,\"url\":\"http://8.135.63.236/resource/advert//2021/01/08/9660403c-859c-49c4-ae2b-4322a68ad44f.jpg\"}],\"name\":\"数据采集\",\"id\":1,\"describe\":null,\"order\":100}}"
+                    val realResponseString = it.string()
                     Log.d(TAG, "doRequestAdvertise$realResponseString")
                     val adResponse =
                         Gson().fromJson(realResponseString, AdvertiseResponse::class.java)
@@ -54,9 +52,7 @@ object ActionUtils {
 
             override fun onResponse(call: Call, response: Response) {
                 response.body()?.let {
-//                    val realResponseString = it.string()
-                    val realResponseString =
-                        "{\"msg\":\"成功\",\"code\":0,\"data\":{\"card_title\":\"卡券标题\",\"card_url\":\"http://8.135.63.236/resource/advert/default/card.png\",\"card_amount\":100.0,\"card_type\":1,\"message\":\"\",\"card_id\":1}}"
+                    val realResponseString = it.string()
                     Log.d(TAG, "doRequestCoupon:$realResponseString")
                     val couponResponse =
                         Gson().fromJson(realResponseString, CouponResponse::class.java)

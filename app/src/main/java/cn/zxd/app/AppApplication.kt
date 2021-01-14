@@ -21,7 +21,7 @@ class AppApplication : Application() {
         registerReceiver(TimeTickReceiver, IntentFilter(Intent.ACTION_TIME_TICK))
         ActionUtils.doRequestAdvertise()
         ActionUtils.doRequestCoupon()
-//        NettyClient.start(ApiUtils.baseUrl)
+        NettyClient.start(ApiUtils.baseUrl)
     }
 
     override fun onTerminate() {

@@ -2,10 +2,12 @@ package cn.zxd.app.net
 
 import android.util.Log
 import cn.zxd.app.util.*
+import cn.zxd.app.work.RewardsPoint
 import io.socket.client.IO
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
 import okhttp3.OkHttpClient
+import org.greenrobot.eventbus.EventBus
 import org.json.JSONObject
 
 
@@ -93,10 +95,17 @@ object NettyClient {
                     Log.d(TAG, "收到更新卡券通知")
                     ActionUtils.doRequestAdvertise()
                 }
-                "NOTICE" -> {
-                    Log.d(TAG, "收到普通服务端 /api/socketio/send JSON格式内容 消息")
+                "IMAGE_UPDATE" -> {
+                    Log.d(TAG, "收到更新图片通知")
                 }
-                else -> Log.d(TAG, "收到")
+                "FACE_RECEIPT" -> {
+                    Log.d(TAG, "收到小票积分通知：${pushCommand.toJsonString()}")
+                    EventBus.getDefault().post(RewardsPoint(pushCommand.data))
+                }
+                "NOTICE" -> {
+                    Log.d(TAG, "收到普通服务端消息${pushCommand.data}")
+                }
+                else -> Log.d(TAG, "收到未知推送${pushCommand.action}")
             }
         }).on(
             Socket.EVENT_DISCONNECT

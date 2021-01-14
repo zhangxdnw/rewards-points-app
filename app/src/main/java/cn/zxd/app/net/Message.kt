@@ -43,12 +43,12 @@ data class LoginResponse(val code: Int, val sign: String) {
     }
 }
 
-data class PushCommand(val action: String, val data: PushData?) {
+data class PushCommand(val action: String, val data: String) {
     companion object {
         fun fromJsonObject(data: JSONObject): PushCommand {
             return PushCommand(
                 data.getString("action"),
-                PushData.fromJsonObject(data.getJSONObject("data"))
+                data.getString("data")
             )
         }
     }
@@ -58,20 +58,15 @@ data class PushCommand(val action: String, val data: PushData?) {
     }
 }
 
-data class PushData(
+data class FacePointPushData(
     val shopCode: String,
     val totalPrice: Double,
     val orderNum: String,
     val equipmentId: String
 ) {
     companion object {
-        fun fromJsonObject(data: JSONObject): PushData {
-            return PushData(
-                data.getString("shopCode"),
-                data.getDouble("totalPrice"),
-                data.getString("orderNum"),
-                data.getString("equipmentId")
-            )
+        fun fromJsonObject(data: String): FacePointPushData {
+            return JSON.parseObject(data, FacePointPushData::class.java)
         }
     }
 
