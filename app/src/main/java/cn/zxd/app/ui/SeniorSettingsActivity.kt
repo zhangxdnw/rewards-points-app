@@ -20,12 +20,13 @@ class SeniorSettingsActivity : BaseActivity() {
     }
 
     fun clickToSave(view: View) {
-        if (dataBinding.etBaseHost.text.matches(Regex("^\\s*$"))
+        if (!TextUtils.isEmpty(dataBinding.etBaseHost.text)
             && !TextUtils.isEmpty(dataBinding.etApiKey.text)
         ) {
             ApiUtils.baseUrl = dataBinding.etBaseHost.text.toString()
             ApiUtils.appKey = dataBinding.etApiKey.text.toString()
             Toast.makeText(view.context, "保存成功", Toast.LENGTH_SHORT).show()
+            finish()
         } else {
             Toast.makeText(view.context, "参数错误", Toast.LENGTH_SHORT).show()
         }

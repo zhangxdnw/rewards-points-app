@@ -1,12 +1,29 @@
 package cn.zxd.app.net
 
+import android.content.Context
+import cn.zxd.app.AppApplication
 import cn.zxd.app.BuildConfig
 
 object ApiUtils {
 
-    var baseUrl: String = BuildConfig.BaseHost
+    private val sharedPreferences =
+        AppApplication.instance.getSharedPreferences("app_config", Context.MODE_PRIVATE)
 
-    var appKey: String = BuildConfig.ApiKey
+    var baseUrl: String
+        get() {
+            return sharedPreferences.getString("baseUrl", BuildConfig.BaseHost)!!
+        }
+        set(value) {
+            sharedPreferences.edit().putString("baseUrl", value).apply()
+        }
+
+    var appKey: String
+        get() {
+            return sharedPreferences.getString("appKey", BuildConfig.ApiKey)!!
+        }
+        set(value) {
+            sharedPreferences.edit().putString("appKey", value).apply()
+        }
 
     const val publicKey: String =
         "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC8XUd5AA/Q6UlUJBItb8m9KNOhSHbiQw3XyRpM/eWO7J/m/PBp1uEcrBs9HpY6uC6ZkIQThI7BFQgvrTfaxn/FY/A2piy75P+7+YyE+ykwHWgT8ELM+bYtm1FRN0gVqV8K1vjS63zFQ+oKfoD9rb+YmD4o2ieBkDzZCa+qo9yuCQIDAQAB"
