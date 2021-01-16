@@ -109,12 +109,11 @@ class FaceCardResponse(code: Int, message: String, data: FaceCardResponseData) :
 
 //APP拉取优惠券
 data class CouponResponseData(
-    val card_id: String,
-    val card_type: Int,
-    val card_title: String,
-    val card_url: String,
-    val card_amount: Double,
-    val message: String
+    val cardId: String,
+    val cardType: Int,
+    val message: String,
+    val message2: String,
+    val cardUrl: String
 )
 
 class CouponResponse(code: Int, message: String, data: CouponResponseData) :

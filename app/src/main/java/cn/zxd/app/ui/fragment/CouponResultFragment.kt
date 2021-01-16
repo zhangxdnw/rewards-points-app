@@ -4,6 +4,8 @@ import android.view.View
 import cn.zxd.app.R
 import cn.zxd.app.databinding.FragmentCouponResultBinding
 import cn.zxd.app.net.FaceCardResponseData
+import cn.zxd.app.ui.MainActivity
+import cn.zxd.app.util.QrUtils
 import com.bumptech.glide.Glide
 
 class CouponResultFragment(val data: FaceCardResponseData) :
@@ -13,9 +15,16 @@ class CouponResultFragment(val data: FaceCardResponseData) :
     }
 
     override fun initView() {
+        binding.tvBack.setOnClickListener {
+            (activity as MainActivity).backToMain()
+        }
     }
 
     override fun loadDate() {
-//        Glide.with(this).load(data.cardUrl).into(binding.ivCouponResult)
+        binding.tvMessage1.text = data.message
+        binding.tvMessage2.text = data.message2
+        if (!data.url.isNullOrEmpty()) {
+            binding.ivQr.setImageBitmap(QrUtils.createBitmap(data.url, 200, 200))
+        }
     }
 }

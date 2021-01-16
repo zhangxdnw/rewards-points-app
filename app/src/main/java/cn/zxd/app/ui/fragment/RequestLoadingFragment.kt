@@ -38,7 +38,7 @@ class RequestLoadingFragment(
                 val couponInfo = data as CouponResponseData
                 ActionUtils.doRequestFaceCard(FaceCardRequest(
                     getSerial(),
-                    couponInfo.card_id,
+                    couponInfo.cardId,
                     imageData
                 ),
                     object : Callback {

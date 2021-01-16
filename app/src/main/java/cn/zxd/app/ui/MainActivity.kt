@@ -215,6 +215,7 @@ class MainActivity : BaseActivity() {
     }
 
     fun clickToCollectCoupon(view: View) {
+        MediaPlayer.create(this, R.raw.welcome).start()
         transFragment(couponFragment)
     }
 }

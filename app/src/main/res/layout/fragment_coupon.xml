@@ -2,32 +2,41 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/main_bg">
 
-    <cn.zxd.app.ui.view.countdown.CountDownView
-        android:id="@+id/cdv_back"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="20dp"
-        app:background_color="#22000000"
-        app:border_color="#55B8E2"
-        app:border_width="2dp"
-        app:text_size="12dp" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="16dp"
+        android:background="@android:color/white">
 
-    <TextView
-        android:id="@+id/tv_couponInfo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="200dp" />
+        <TextView
+            android:id="@+id/tv_cardMessage1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="200dp"
+            android:textSize="24sp" />
 
-    <Button
-        android:id="@+id/btn_getCoupon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="点击领取优惠券" />
+        <TextView
+            android:id="@+id/tv_cardMessage2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="250dp"
+            android:textSize="24sp" />
 
 
+        <ImageView
+            android:id="@+id/iv_cardImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="400dp"
+            android:layout_marginRight="40dp"
+            android:scaleType="centerInside" />
+
+    </RelativeLayout>
 </RelativeLayout>
