@@ -7,6 +7,8 @@ import cn.zxd.app.AppApplication
 import cn.zxd.app.net.*
 import com.alibaba.fastjson.JSON
 import com.google.gson.Gson
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.Response

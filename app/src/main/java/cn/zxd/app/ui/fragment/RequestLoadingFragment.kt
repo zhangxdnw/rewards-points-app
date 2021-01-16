@@ -1,5 +1,7 @@
 package cn.zxd.app.ui.fragment
 
+import android.graphics.BitmapFactory
+import android.os.Environment
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -8,8 +10,12 @@ import cn.zxd.app.databinding.FragmentRequestLoadingBinding
 import cn.zxd.app.net.*
 import cn.zxd.app.ui.MainActivity
 import cn.zxd.app.util.ActionUtils
+import cn.zxd.app.util.Base64Utils
+import cn.zxd.app.util.FileUtils
 import cn.zxd.app.util.getSerial
 import com.google.gson.Gson
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.Response
@@ -17,7 +23,7 @@ import java.io.IOException
 
 class RequestLoadingFragment(
     private val line: Int,
-    private val imageData: String,
+    private val imageData: ByteArray,
     private val data: Any
 ) :
     BaseFragment<FragmentRequestLoadingBinding>(R.layout.fragment_request_loading) {
@@ -36,12 +42,15 @@ class RequestLoadingFragment(
         when (line) {
             1 -> {
                 val couponInfo = data as CouponResponseData
-                ActionUtils.doRequestFaceCard(FaceCardRequest(
-                    getSerial(),
-                    couponInfo.cardId,
-                    imageData
-                ),
-                    object : Callback {
+                GlobalScope.async {
+                    val bitmap  = BitmapFactory.decodeByteArray(imageData, 0, imageData.size, )
+                    FileUtils.writeToFile(bitmap, Environment.getExternalStorageDirectory().toString() + "/a.bitmap")
+                    val request = FaceCardRequest(
+                        getSerial(),
+                        couponInfo.cardId,
+                        Base64Utils.encode(imageData)
+                    )
+                    ActionUtils.doRequestFaceCard(request, object : Callback {
                         override fun onFailure(call: Call, e: IOException) {
                             Toast.makeText(context, "doRequestFaceCard失败", Toast.LENGTH_SHORT)
                                 .show()
@@ -61,36 +70,40 @@ class RequestLoadingFragment(
                         }
 
                     })
+                }
             }
             0 -> {
                 val pointInfo = data as FacePointPushData
-                ActionUtils.doRequestFacePoint(
-                    FacePointRequest(
+                GlobalScope.async {
+                    val request = FacePointRequest(
                         getSerial(),
                         pointInfo.orderNum,
                         pointInfo.totalPrice,
                         pointInfo.shopCode,
-                        imageData
-                    ), object : Callback {
-                        override fun onFailure(call: Call, e: IOException) {
-                            Toast.makeText(context, "doRequestFacePoint失败", Toast.LENGTH_SHORT)
-                                .show()
-                        }
-
-                        override fun onResponse(call: Call, response: Response) {
-                            response.body()?.let {
-                                val realResponseString = it.string()
-                                Log.d(TAG, "doRequestFaceCard$realResponseString")
-                                val facePointResponse = Gson().fromJson(
-                                    realResponseString,
-                                    FacePointResponse::class.java
-                                )
-                                //展示信息
-                                toRewardsResult(facePointResponse.data)
+                        Base64Utils.encode(imageData)
+                    )
+                    ActionUtils.doRequestFacePoint(
+                        request, object : Callback {
+                            override fun onFailure(call: Call, e: IOException) {
+                                Toast.makeText(context, "doRequestFacePoint失败", Toast.LENGTH_SHORT)
+                                    .show()
                             }
-                        }
 
-                    })
+                            override fun onResponse(call: Call, response: Response) {
+                                response.body()?.let {
+                                    val realResponseString = it.string()
+                                    Log.d(TAG, "doRequestFaceCard$realResponseString")
+                                    val facePointResponse = Gson().fromJson(
+                                        realResponseString,
+                                        FacePointResponse::class.java
+                                    )
+                                    //展示信息
+                                    toRewardsResult(facePointResponse.data)
+                                }
+                            }
+
+                        })
+                }
             }
         }
     }

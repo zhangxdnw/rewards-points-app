@@ -5,6 +5,7 @@ import android.widget.Toast
 import cn.zxd.app.AppApplication
 import com.arcsoft.face.ErrorInfo
 import com.arcsoft.face.FaceEngine
+import com.arcsoft.face.FaceInfo
 import com.arcsoft.face.enums.DetectFaceOrientPriority
 import com.arcsoft.face.enums.DetectMode
 import com.hjimi.api.iminect.ImiDevice
@@ -69,36 +70,43 @@ object FaceDetectWork {
             ImiDevice.ImiStreamType.COLOR.toNative()
                     and ImiDevice.ImiStreamType.IR.toNative()
         )
+        val faceInfoList: List<FaceInfo> = ArrayList()
         while (!canceled) {
             val colorFrame =
                 ImiDevice.getInstance().readNextFrame(ImiDevice.ImiStreamType.COLOR, 50)
             if (colorFrame != null) {
                 EventBus.getDefault().post(CameraFrame(0, colorFrame, System.currentTimeMillis()))
 //                Log.d("FaceDetectWork", "getImage")
-//                val data: ByteBuffer? = clone(colorFrame.data)
-//                if (data != null) {
-//                    val byteArray = ByteArray(data.remaining())
-//                    data.get(byteArray, 0, byteArray.size)
+                val data: ByteBuffer? = clone(colorFrame.data)
+                if (data != null) {
+                    val byteArray = ByteArray(data.remaining())
+                    data.get(byteArray, 0, byteArray.size)
 //                    Log.d("FaceDetectWork", "copy RGB data")
 //                    EventBus.getDefault().post(PreviewData(byteArray, System.currentTimeMillis()))
-//                }
-//                val code = faceEngine.detectFaces(
-//                    byteArray,
-//                    colorFrame.width,
-//                    colorFrame.height,
-//                    FaceEngine.CP_PAF_BGR24,
-//                    faceInfoList
-//                )
-//                Log.d("FaceDetectWork", "detectFaces result:$code")
-//                if (code == ErrorInfo.MOK) {
-//                    EventBus.getDefault().post(faceInfoList)
-//                } else {
-//                    continue
-//                }
+                    val code = faceEngine.detectFaces(
+                        byteArray,
+                        colorFrame.width,
+                        colorFrame.height,
+                        FaceEngine.CP_PAF_BGR24,
+                        faceInfoList
+                    )
+//                    Log.d("FaceDetectWork", "detectFaces result:$code")
+                    if (code == ErrorInfo.MOK && faceInfoList.isNotEmpty()) {
+                        val rect = faceInfoList[0].rect
+                        if ((rect.bottom - rect.top) * (rect.right - rect.left) >= 960 * 720 / 36)
+                            EventBus.getDefault()
+                                .post(
+                                    PreviewData(
+                                        byteArray,
+                                        faceInfoList,
+                                        System.currentTimeMillis()
+                                    )
+                                )
+                    } else {
+                        continue
+                    }
+                }
             }
-//            val irFrame = ImiDevice.getInstance().readNextFrame(ImiDevice.ImiStreamType.IR, 50)
-//            if (irFrame != null)
-//                EventBus.getDefault().post(CameraFrame(1, irFrame))
         }
         ImiDevice.getInstance().stopStream(
             ImiDevice.ImiStreamType.COLOR.toNative()

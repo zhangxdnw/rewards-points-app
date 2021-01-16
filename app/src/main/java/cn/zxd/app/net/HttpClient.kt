@@ -1,5 +1,6 @@
 package cn.zxd.app.net
 
+import android.util.Log
 import com.google.gson.Gson
 import okhttp3.*
 import okhttp3.Request
@@ -43,20 +44,22 @@ object HttpClient {
     }
 
     fun postFaceCard(request: FaceCardRequest, callback: Callback) {
+        val sendString = Gson().toJson(request)
+        Log.d("postFaceCard", sendString)
         val formBody = FormBody.create(
-            MediaType.parse("application/json"), Gson().toJson(request)
+            MediaType.parse("application/json"), sendString
         )
         post(ApiUtils.baseUrl + HTTP_PORT + ApiUtils.collectCouponApi, formBody, callback)
     }
 
-    fun postFacePoint(request: FacePointRequest, callback: Callback){
+    fun postFacePoint(request: FacePointRequest, callback: Callback) {
         val formBody = FormBody.create(
             MediaType.parse("application/json"), Gson().toJson(request)
         )
         post(ApiUtils.baseUrl + HTTP_PORT + ApiUtils.rewardsPointApi, formBody, callback)
     }
 
-    fun postAppConfig(request:cn.zxd.app.net.Request, callback: Callback) {
+    fun postAppConfig(request: cn.zxd.app.net.Request, callback: Callback) {
         val formBody = FormBody.create(MediaType.parse("application/json"), Gson().toJson(request))
         post(ApiUtils.baseUrl + HTTP_PORT + ApiUtils.appConfigApi, formBody, callback)
     }

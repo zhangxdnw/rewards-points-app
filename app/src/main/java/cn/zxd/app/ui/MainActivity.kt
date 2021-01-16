@@ -72,7 +72,7 @@ class MainActivity : BaseActivity() {
         if (serverData != null) {
             Glide.with(this).load(serverData!!.bottom.path).into(dataBinding.ivBottomBanner)
         }
-        dataBinding.vMask.background = CoverDrawable(ColorDrawable(Color.WHITE), 480, 300,200)
+        dataBinding.vMask.background = CoverDrawable(ColorDrawable(Color.WHITE), 480, 300, 200)
         EventBus.getDefault().register(this)
 
         FaceDetectWork.detectInit()
@@ -133,13 +133,11 @@ class MainActivity : BaseActivity() {
 
     fun showFaceDetect() {
         dataBinding.glpColor.visibility = View.VISIBLE
-        dataBinding.frvFaceRect.visibility = View.VISIBLE
         dataBinding.vMask.visibility = View.VISIBLE
     }
 
     fun dismissFaceDetect() {
         dataBinding.glpColor.visibility = View.INVISIBLE
-        dataBinding.frvFaceRect.visibility = View.INVISIBLE
         dataBinding.vMask.visibility = View.INVISIBLE
     }
 
@@ -175,36 +173,21 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    val getFaceCount = 20;
+    var countIndex = 0;
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onDrawFace(previewData: PreviewData) {
-        if (dataBinding.frvFaceRect.visibility == View.VISIBLE) {   //需要识别人脸
-
-
-            if (dataBinding.glpColor.visibility == View.VISIBLE) {  //显示人脸
-
+        if (dataBinding.vMask.visibility == View.VISIBLE) {
+            Log.d("MainActivity", "get face")
+            countIndex++;
+            if (countIndex == getFaceCount) {
+                FaceDetectWork.canceled = true
+                EventBus.getDefault().post(SendData(previewData.data, previewData.faces[0]))
             }
+        }else {
+            Log.d("MainActivity", "onDrawFace ignore")
         }
-//        if (faceInfoList.isNotEmpty()) {
-//            if (firstFace == 0L) {
-//                firstFace = System.currentTimeMillis()
-//            }
-//            val drawInfoList: MutableList<DrawInfo> = ArrayList()
-//            for (i in faceInfoList.indices) {
-//                drawInfoList.add(
-//                    DrawInfo(
-//                        drawHelper.adjustRect(faceInfoList[i].rect),
-//                        0, 0, 0, Color.YELLOW, ""
-//                    )
-//                )
-//            }
-//            drawHelper.draw(dataBinding.frvFaceRect, drawInfoList)
-//        } else {
-//            firstFace = 0;
-//        }
-//        if (firstFace > 0 && (System.currentTimeMillis() - firstFace >= faceDelay)) {
-//            firstFace = 0;
-//
-//        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

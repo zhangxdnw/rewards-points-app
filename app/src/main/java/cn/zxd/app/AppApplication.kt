@@ -8,6 +8,7 @@ import cn.zxd.app.net.ApiUtils
 import cn.zxd.app.net.NettyClient
 import cn.zxd.app.receiver.TimeTickReceiver
 import cn.zxd.app.util.ActionUtils
+import cn.zxd.app.work.FaceDetectWork
 import com.hjimi.api.iminect.ImiNect
 
 class AppApplication : Application() {
@@ -30,6 +31,9 @@ class AppApplication : Application() {
 
     override fun onTerminate() {
         super.onTerminate()
+        FaceDetectWork.canceled = true
+        FaceDetectWork.cameraDeInit()
+        FaceDetectWork.detectDeInit()
         unregisterReceiver(TimeTickReceiver)
     }
 }

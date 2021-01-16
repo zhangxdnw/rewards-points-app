@@ -42,7 +42,7 @@ class SplashActivity : BaseActivity() {
             }
             dialog.show()
         } else {
-        jumpToMain()
+            jumpToMain()
         }
     }
 
