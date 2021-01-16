@@ -14,4 +14,6 @@
     <string name="save">保存</string>
     <string name="volume">声音</string>
 
+    <string name="activity_web_view">用户协议</string>
+
 </resources>

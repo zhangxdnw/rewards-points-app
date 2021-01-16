@@ -15,7 +15,11 @@ import okhttp3.Callback
 import okhttp3.Response
 import java.io.IOException
 
-class RequestLoadingFragment(private val line: Int,private val imageData:String, private val data: Any) :
+class RequestLoadingFragment(
+    private val line: Int,
+    private val imageData: String,
+    private val data: Any
+) :
     BaseFragment<FragmentRequestLoadingBinding>(R.layout.fragment_request_loading) {
 
     private val TAG = "RequestLoadingFragment"
@@ -47,14 +51,12 @@ class RequestLoadingFragment(private val line: Int,private val imageData:String,
                             response.body()?.let {
                                 val realResponseString = it.string()
                                 Log.d(TAG, "doRequestFaceCard$realResponseString")
-                                val faceCardResponse = Gson().fromJson(realResponseString, FaceCardResponse::class.java)
-                                if (faceCardResponse.data.url.isNullOrEmpty()) {
-                                    //展示信息
-                                    toCouponResult(faceCardResponse.data)
-                                } else {
-                                    //显示二维码
-                                    toQrCode(faceCardResponse.data.url)
-                                }
+                                val faceCardResponse = Gson().fromJson(
+                                    realResponseString,
+                                    FaceCardResponse::class.java
+                                )
+                                //展示信息
+                                toCouponResult(faceCardResponse.data)
                             }
                         }
 
@@ -62,38 +64,38 @@ class RequestLoadingFragment(private val line: Int,private val imageData:String,
             }
             0 -> {
                 val pointInfo = data as FacePointPushData
-                ActionUtils.doRequestFacePoint(FacePointRequest(getSerial(),pointInfo.orderNum, pointInfo.totalPrice, pointInfo.shopCode, imageData ), object:Callback{
-                    override fun onFailure(call: Call, e: IOException) {
-                        Toast.makeText(context, "doRequestFacePoint失败", Toast.LENGTH_SHORT)
-                            .show()
-                    }
+                ActionUtils.doRequestFacePoint(
+                    FacePointRequest(
+                        getSerial(),
+                        pointInfo.orderNum,
+                        pointInfo.totalPrice,
+                        pointInfo.shopCode,
+                        imageData
+                    ), object : Callback {
+                        override fun onFailure(call: Call, e: IOException) {
+                            Toast.makeText(context, "doRequestFacePoint失败", Toast.LENGTH_SHORT)
+                                .show()
+                        }
 
-                    override fun onResponse(call: Call, response: Response) {
-                        response.body()?.let {
-                            val realResponseString = it.string()
-                            Log.d(TAG, "doRequestFaceCard$realResponseString")
-                            val facePointResponse = Gson().fromJson(realResponseString, FacePointResponse::class.java)
-                            if (facePointResponse.data.url.isNullOrEmpty()) {
+                        override fun onResponse(call: Call, response: Response) {
+                            response.body()?.let {
+                                val realResponseString = it.string()
+                                Log.d(TAG, "doRequestFaceCard$realResponseString")
+                                val facePointResponse = Gson().fromJson(
+                                    realResponseString,
+                                    FacePointResponse::class.java
+                                )
                                 //展示信息
                                 toRewardsResult(facePointResponse.data)
-                            } else {
-                                //显示二维码
-                                toQrCode(facePointResponse.data.url)
                             }
                         }
-                    }
 
-                })
+                    })
             }
         }
     }
 
-    fun toQrCode(url:String) {
-        //停止扫描人脸 并 获取一张图片
-        (activity as MainActivity).transFragment(QrCodeFragment(url))
-    }
-
-    fun toRewardsResult(data:FacePointResponseData) {
+    fun toRewardsResult(data: FacePointResponseData) {
         (activity as MainActivity).transFragment(RewardsResultFragment(data))
     }
 

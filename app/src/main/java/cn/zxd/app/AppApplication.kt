@@ -7,6 +7,7 @@ import cn.zxd.app.net.ApiUtils
 import cn.zxd.app.net.NettyClient
 import cn.zxd.app.receiver.TimeTickReceiver
 import cn.zxd.app.util.ActionUtils
+import com.hjimi.api.iminect.ImiNect
 
 class AppApplication : Application() {
 
@@ -21,7 +22,9 @@ class AppApplication : Application() {
         registerReceiver(TimeTickReceiver, IntentFilter(Intent.ACTION_TIME_TICK))
         ActionUtils.doRequestAdvertise()
         ActionUtils.doRequestCoupon()
+        ActionUtils.doRequestConfig()
         NettyClient.start(ApiUtils.baseUrl)
+        ImiNect.initialize()
     }
 
     override fun onTerminate() {

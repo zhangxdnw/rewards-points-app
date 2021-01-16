@@ -29,4 +29,16 @@ class FaceDetectFragment(private val line: Int, private val data: Any) :
         registerData = FileUtils.readAllText(activity?.assets!!.open("register_image.txt"))
         notRegisterData = FileUtils.readAllText(activity?.assets!!.open("not_register_image.txt"))
     }
+
+    override fun onResume() {
+        super.onResume()
+        if (!(activity as MainActivity).isShowFaceDetect()) {
+            (activity as MainActivity).showFaceDetect()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        (activity as MainActivity).dismissFaceDetect()
+    }
 }

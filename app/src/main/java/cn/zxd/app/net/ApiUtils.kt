@@ -22,6 +22,7 @@ object ApiUtils {
 
     const val couponApi = "/api/card/gefromcrm"
 
+    const val appConfigApi = "/api/device/config"
 }
 
 open class Request(val equipmentId: String)
@@ -61,6 +62,17 @@ data class AppImageResponseData(
 class AppImageResponse(code: Int, message: String, data: AppImageResponseData) :
     Response<AppImageResponseData>(code, message, data)
 
+//APP配置
+data class AppConfigResponseData(
+    val protocolUrl: String,
+    val protocolTip: String,
+    val faceScoreEndUrl: String,
+    val faceCardEndUrl: String
+)
+
+class AppConfigResponse(code: Int, message: String, data: AppConfigResponseData) :
+    Response<AppConfigResponseData>(code, message, data)
+
 //人脸积分接口
 class FacePointRequest(
     equipmentId: String, val orderNum: String,
@@ -71,10 +83,9 @@ class FacePointRequest(
 ) : Request(equipmentId)
 
 data class FacePointResponseData(
-    val name: String,
-    val score: Double,
     val url: String,
-    val message: String
+    val message: String,
+    val message2: String
 )
 
 class FacePointResponse(code: Int, message: String, data: FacePointResponseData) :
@@ -88,10 +99,9 @@ class FaceCardRequest(
 ) : Request(equipmentId)
 
 data class FaceCardResponseData(
-    val cardTitle: String,
-    val cardUrl: String,
     val url: String,
-    val message: String
+    val message: String,
+    val message2: String
 )
 
 class FaceCardResponse(code: Int, message: String, data: FaceCardResponseData) :

@@ -16,6 +16,6 @@ class CouponResultFragment(val data: FaceCardResponseData) :
     }
 
     override fun loadDate() {
-        Glide.with(this).load(data.cardUrl).into(binding.ivCouponResult)
+//        Glide.with(this).load(data.cardUrl).into(binding.ivCouponResult)
     }
 }

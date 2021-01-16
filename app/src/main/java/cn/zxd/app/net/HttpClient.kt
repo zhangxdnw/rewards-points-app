@@ -55,4 +55,9 @@ object HttpClient {
         )
         post(ApiUtils.baseUrl + HTTP_PORT + ApiUtils.rewardsPointApi, formBody, callback)
     }
+
+    fun postAppConfig(request:cn.zxd.app.net.Request, callback: Callback) {
+        val formBody = FormBody.create(MediaType.parse("application/json"), Gson().toJson(request))
+        post(ApiUtils.baseUrl + HTTP_PORT + ApiUtils.appConfigApi, formBody, callback)
+    }
 }

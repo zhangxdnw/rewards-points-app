@@ -75,6 +75,10 @@
             android:label="@string/activity_senior_settings_name"
             android:screenOrientation="portrait" />
 
+        <activity android:name=".ui.WebViewActivity"
+            android:label="@string/activity_web_view"
+            android:screenOrientation="portrait" />
+
         <receiver
             android:name=".receiver.BootCompletedReceiver"
             android:enabled="true"

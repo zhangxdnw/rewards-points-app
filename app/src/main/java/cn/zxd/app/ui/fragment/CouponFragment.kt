@@ -30,7 +30,7 @@ class CouponFragment : BaseFragment<FragmentCouponBinding>(R.layout.fragment_cou
 
             override fun onFinishCount() {
                 binding.cdvBack.cancel()
-                (activity as MainActivity).transFragment((activity as MainActivity).mainFragment)
+                (activity as MainActivity).backToMain()
             }
 
         })

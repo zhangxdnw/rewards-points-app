@@ -77,4 +77,25 @@ object ActionUtils {
     fun doRequestFacePoint(request: FacePointRequest, callback: Callback) {
         HttpClient.postFacePoint(request, callback)
     }
+
+    fun doRequestConfig() {
+        HttpClient.postAppConfig(Request(getSerial()), object:Callback{
+            override fun onFailure(call: Call, e: IOException) {
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                response.body()?.let {
+                    val realResponseString = it.string()
+                    Log.d(TAG, "doRequestConfig:$realResponseString")
+                    val configResponse =
+                        Gson().fromJson(realResponseString, AppConfigResponse::class.java)
+                    if (configResponse.code == 0) {
+                        serverResponseSharedInfo.edit()
+                            .putString("server_config", JSON.toJSONString(configResponse.data))
+                            .apply()
+                    }
+                }
+            }
+        })
+    }
 }

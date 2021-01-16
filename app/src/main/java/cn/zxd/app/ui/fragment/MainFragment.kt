@@ -25,9 +25,6 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
         val serverData = (activity as MainActivity).serverData
         if (serverData == null) {
             dataList.add(ImageDataBean(1, 0, R.drawable.image1, ""))
-            dataList.add(ImageDataBean(1, 0, R.drawable.image2, ""))
-            dataList.add(ImageDataBean(1, 0, R.drawable.image3, ""))
-            dataList.add(ImageDataBean(1, 0, R.drawable.image4, ""))
             binding.bAd.adapter.notifyDataSetChanged()
         } else {
             for (ad in serverData.top.adList) {

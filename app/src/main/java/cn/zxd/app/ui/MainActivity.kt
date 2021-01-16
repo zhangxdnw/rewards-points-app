@@ -3,6 +3,8 @@ package cn.zxd.app.ui
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -13,30 +15,23 @@ import androidx.fragment.app.FragmentTransaction
 import cn.zxd.app.R
 import cn.zxd.app.bean.Advertisement
 import cn.zxd.app.databinding.ActivityMainBinding
-import cn.zxd.app.net.AdvertiseRequest
 import cn.zxd.app.net.FacePointPushData
-import cn.zxd.app.net.HttpClient
 import cn.zxd.app.ui.fragment.CouponFragment
 import cn.zxd.app.ui.fragment.FaceDetectFragment
 import cn.zxd.app.ui.fragment.MainFragment
 import cn.zxd.app.ui.fragment.RewardsFragment
-import cn.zxd.app.ui.view.face.model.DrawInfo
+import cn.zxd.app.ui.view.CoverDrawable
 import cn.zxd.app.ui.view.face.util.DrawHelper
 import cn.zxd.app.work.*
 import com.alibaba.fastjson.JSON
-import com.arcsoft.face.FaceInfo
 import com.bumptech.glide.Glide
 import com.hjimi.api.iminect.ImiDevice
 import com.hjimi.api.iminect.ImiPixelFormat
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import okhttp3.Call
-import okhttp3.Callback
-import okhttp3.Response
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import java.io.IOException
 import java.util.*
 
 
@@ -46,8 +41,8 @@ class MainActivity : BaseActivity() {
     private val clickMax = 1
     private var clickCount = 0
 
-    //    val frameMode = ImiDevice.getInstance().getCurrentFrameMode(ImiDevice.ImiStreamType.COLOR)
-    val drawHelper = DrawHelper(640, 480, 640, 480, 0, 0, false, false, false)
+    val frameMode = ImiDevice.getInstance().getCurrentFrameMode(ImiDevice.ImiStreamType.COLOR)
+    val drawHelper = DrawHelper(960, 720, 960, 720, 0, 0, false, false, false)
 
     val faceDelay = 5000L
     var firstFace = 0L
@@ -77,35 +72,36 @@ class MainActivity : BaseActivity() {
         if (serverData != null) {
             Glide.with(this).load(serverData!!.bottom.path).into(dataBinding.ivBottomBanner)
         }
+        dataBinding.vMask.background = CoverDrawable(ColorDrawable(Color.WHITE), 480, 300,200)
         EventBus.getDefault().register(this)
 
-//        FaceDetectWork.detectInit()
+        FaceDetectWork.detectInit()
         supportFragmentManager.inTransaction { add(R.id.rl_topBanner, mainFragment) }
     }
 
     override fun onStart() {
         super.onStart()
-//        FaceDetectWork.cameraInit(object : ImiDevice.OpenDeviceListener {
-//            override fun onOpenDeviceSuccess() {
-//                GlobalScope.launch {
-//                    FaceDetectWork.canceled = false
-//                    FaceDetectWork.detectingFace()
-//                }
-//            }
-//
-//            override fun onOpenDeviceFailed(p0: String?) {
-//                Log.e("FaceDetectWork", "onOpenDeviceFailed:$p0")
-//                Toast.makeText(this@MainActivity.applicationContext, p0, Toast.LENGTH_SHORT).show()
-//            }
-//
-//        })
+        FaceDetectWork.cameraInit(object : ImiDevice.OpenDeviceListener {
+            override fun onOpenDeviceSuccess() {
+                GlobalScope.launch {
+                    FaceDetectWork.canceled = false
+                    FaceDetectWork.detectingFace()
+                }
+            }
+
+            override fun onOpenDeviceFailed(p0: String?) {
+                Log.e("FaceDetectWork", "onOpenDeviceFailed:$p0")
+                Toast.makeText(this@MainActivity.applicationContext, p0, Toast.LENGTH_SHORT).show()
+            }
+
+        })
     }
 
     override fun onStop() {
         super.onStop()
-//        FaceDetectWork.canceled = true
-//        FaceDetectWork.cameraDeInit()
-//        FaceDetectWork.detectDeInit()
+        FaceDetectWork.canceled = true
+        FaceDetectWork.cameraDeInit()
+        FaceDetectWork.detectDeInit()
     }
 
 
@@ -131,28 +127,50 @@ class MainActivity : BaseActivity() {
     fun closeFaceDetect() {
     }
 
+    fun isShowFaceDetect(): Boolean {
+        return dataBinding.glpColor.visibility == View.VISIBLE
+    }
+
+    fun showFaceDetect() {
+        dataBinding.glpColor.visibility = View.VISIBLE
+        dataBinding.frvFaceRect.visibility = View.VISIBLE
+        dataBinding.vMask.visibility = View.VISIBLE
+    }
+
+    fun dismissFaceDetect() {
+        dataBinding.glpColor.visibility = View.INVISIBLE
+        dataBinding.frvFaceRect.visibility = View.INVISIBLE
+        dataBinding.vMask.visibility = View.INVISIBLE
+    }
+
+    fun backToMain() {
+        supportFragmentManager.inTransaction { replace(R.id.rl_topBanner, mainFragment) }
+    }
+
     fun transFragment(fragment: Fragment) {
         supportFragmentManager.inTransaction { replace(R.id.rl_topBanner, fragment) }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN_ORDERED)
     fun onEvent(frame: CameraFrame) {
-        when (frame.type) {
-            0 -> {
-                if (dataBinding.glpColor.visibility != View.VISIBLE) return
-//                when (frameMode.format) {
-//                    ImiPixelFormat.IMI_PIXEL_FORMAT_IMAGE_YUV420SP, ImiPixelFormat.IMI_PIXEL_FORMAT_IMAGE_RGB24 -> {
-//                        dataBinding.glpColor.paint(
-//                            null,
-//                            frame.frame.data,
-//                            frame.frame.width,
-//                            frame.frame.height
-//                        )
-//                    }
-//                    else -> {
-//                        Log.e("MainActivity", "Format NOT support")
-//                    }
-//                }
+        if (dataBinding.glpColor.visibility == View.VISIBLE) {
+            when (frame.type) {
+                0 -> {
+                    if (dataBinding.glpColor.visibility != View.VISIBLE) return
+                    when (frameMode.format) {
+                        ImiPixelFormat.IMI_PIXEL_FORMAT_IMAGE_YUV420SP, ImiPixelFormat.IMI_PIXEL_FORMAT_IMAGE_RGB24 -> {
+                            dataBinding.glpColor.paint(
+                                null,
+                                frame.frame.data,
+                                frame.frame.width,
+                                frame.frame.height
+                            )
+                        }
+                        else -> {
+                            Log.e("MainActivity", "Format NOT support")
+                        }
+                    }
+                }
             }
         }
     }
@@ -191,6 +209,7 @@ class MainActivity : BaseActivity() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun toRewardsPoint(data: RewardsPoint) {
+        MediaPlayer.create(this, R.raw.dingding).start()
         rewardsFragment.info = FacePointPushData.fromJsonObject(data.message)
         transFragment(rewardsFragment)
     }

@@ -2,20 +2,107 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg">
+    android:background="@color/main_bg">
 
-    <TextView
-        android:id="@+id/tv_pointDetail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="200dp" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="16dp"
+        android:background="@android:color/white">
 
-    <Button
-        android:id="@+id/btn_rewardsPoint"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="确认积分" />
+        <ImageView
+            android:id="@+id/iv_git"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="200dp"
+            android:src="@mipmap/gift" />
 
+        <TextView
+            android:id="@+id/tv_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_git"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="90dp"
+            android:text="本次消费金额"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:id="@+id/ll_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_info"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="￥"
+                android:textColor="#0099CC"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/tv_pointDetail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:textColor="#0099CC"
+                android:textSize="48sp" />
+        </LinearLayout>
+
+
+        <CheckBox
+            style="@style/MyCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="100dp"
+            android:checked="true"
+            android:text="使用刷脸积分需同意以下协议"
+            android:textColor="#999"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tv_userPermission"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="60dp"
+            android:textColor="#999"
+            android:gravity="center"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:id="@+id/btn_rewardsPoint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="160dp"
+            android:background="@drawable/apply_btn_bg"
+            android:gravity="center"
+            android:paddingLeft="24dp"
+            android:paddingTop="8dp"
+            android:paddingRight="24dp"
+            android:paddingBottom="8dp">
+
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:src="@mipmap/ic_face_recog" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:text="刷脸扫码领积分"
+                android:textColor="@android:color/white"
+                android:textSize="24sp" />
+
+        </LinearLayout>
+    </RelativeLayout>
 </RelativeLayout>

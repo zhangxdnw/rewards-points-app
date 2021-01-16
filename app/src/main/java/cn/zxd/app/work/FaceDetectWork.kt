@@ -74,14 +74,14 @@ object FaceDetectWork {
                 ImiDevice.getInstance().readNextFrame(ImiDevice.ImiStreamType.COLOR, 50)
             if (colorFrame != null) {
                 EventBus.getDefault().post(CameraFrame(0, colorFrame, System.currentTimeMillis()))
-                Log.d("FaceDetectWork", "getImage")
-                val data: ByteBuffer? = clone(colorFrame.data)
-                if (data != null) {
-                    val byteArray = ByteArray(data.remaining())
-                    data.get(byteArray, 0, byteArray.size)
-                    Log.d("FaceDetectWork", "copy RGB data")
-                    EventBus.getDefault().post(PreviewData(byteArray, System.currentTimeMillis()))
-                }
+//                Log.d("FaceDetectWork", "getImage")
+//                val data: ByteBuffer? = clone(colorFrame.data)
+//                if (data != null) {
+//                    val byteArray = ByteArray(data.remaining())
+//                    data.get(byteArray, 0, byteArray.size)
+//                    Log.d("FaceDetectWork", "copy RGB data")
+//                    EventBus.getDefault().post(PreviewData(byteArray, System.currentTimeMillis()))
+//                }
 //                val code = faceEngine.detectFaces(
 //                    byteArray,
 //                    colorFrame.width,
