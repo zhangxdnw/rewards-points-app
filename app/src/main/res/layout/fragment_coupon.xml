@@ -11,6 +11,12 @@
         android:layout_margin="16dp"
         android:background="@android:color/white">
 
+        <cn.zxd.app.ui.view.countdown.DigitCountDownView
+            android:id="@+id/dcdv_countDown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true" />
+
         <TextView
             android:id="@+id/tv_cardMessage1"
             android:layout_width="wrap_content"

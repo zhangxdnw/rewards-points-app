@@ -21,9 +21,9 @@
 
         <Button
             android:id="@+id/button2"
-            android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:onClick="clickToCollectCoupon"
             android:text="领券" />
 
@@ -38,32 +38,37 @@
 
     <cn.zxd.app.ui.view.camera.GLPanel
         android:id="@+id/glp_color"
-        android:layout_width="960px"
-        android:layout_height="720px"
+        android:layout_width="640px"
+        android:layout_height="480px"
+        android:layout_marginTop="150dp"
         android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/rl_bottomBanner"
+        android:scaleX="1.5"
+        android:scaleY="1.5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <cn.zxd.app.ui.view.face.FaceRectView
         android:id="@+id/frv_faceRect"
-        android:layout_width="960px"
-        android:layout_height="720px"
+        android:layout_width="640px"
+        android:layout_height="480px"
+        android:scaleX="1.5"
+        android:scaleY="1.5"
         android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/rl_bottomBanner"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintEnd_toEndOf="@id/glp_color"
+        app:layout_constraintStart_toStartOf="@id/glp_color"
+        app:layout_constraintTop_toTopOf="@id/glp_color" />
 
     <View
         android:id="@+id/v_mask"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:scaleX="1.5"
+        android:scaleY="1.5"
         android:visibility="invisible"
-        app:layout_constraintTop_toTopOf="@id/frv_faceRect"
-        app:layout_constraintBottom_toBottomOf="@id/frv_faceRect"
-        app:layout_constraintLeft_toLeftOf="@id/frv_faceRect"
-        app:layout_constraintRight_toRightOf="@id/frv_faceRect" />
+        app:layout_constraintBottom_toBottomOf="@id/glp_color"
+        app:layout_constraintLeft_toLeftOf="@id/glp_color"
+        app:layout_constraintRight_toRightOf="@id/glp_color"
+        app:layout_constraintTop_toTopOf="@id/glp_color" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

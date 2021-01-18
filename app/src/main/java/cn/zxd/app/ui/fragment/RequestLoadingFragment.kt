@@ -1,7 +1,5 @@
 package cn.zxd.app.ui.fragment
 
-import android.graphics.BitmapFactory
-import android.os.Environment
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -9,10 +7,7 @@ import cn.zxd.app.R
 import cn.zxd.app.databinding.FragmentRequestLoadingBinding
 import cn.zxd.app.net.*
 import cn.zxd.app.ui.MainActivity
-import cn.zxd.app.util.ActionUtils
-import cn.zxd.app.util.Base64Utils
-import cn.zxd.app.util.FileUtils
-import cn.zxd.app.util.getSerial
+import cn.zxd.app.util.*
 import com.google.gson.Gson
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -43,12 +38,11 @@ class RequestLoadingFragment(
             1 -> {
                 val couponInfo = data as CouponResponseData
                 GlobalScope.async {
-                    val bitmap  = BitmapFactory.decodeByteArray(imageData, 0, imageData.size, )
-                    FileUtils.writeToFile(bitmap, Environment.getExternalStorageDirectory().toString() + "/a.bitmap")
+                    val bitmap = BitmapUtils.createMyBitmap(imageData, 640, 480)
                     val request = FaceCardRequest(
                         getSerial(),
                         couponInfo.cardId,
-                        Base64Utils.encode(imageData)
+                        BitmapUtils.bitmapToBase64(bitmap)
                     )
                     ActionUtils.doRequestFaceCard(request, object : Callback {
                         override fun onFailure(call: Call, e: IOException) {
@@ -64,8 +58,16 @@ class RequestLoadingFragment(
                                     realResponseString,
                                     FaceCardResponse::class.java
                                 )
-                                //展示信息
-                                toCouponResult(faceCardResponse.data)
+                                if(faceCardResponse.data == null) {
+                                    activity?.runOnUiThread {
+                                        Toast.makeText(context, "${faceCardResponse.msg}", Toast.LENGTH_SHORT)
+                                            .show()
+                                        (activity as MainActivity).backToMain()
+                                    }
+                                } else {
+                                    //展示信息
+                                    toCouponResult(faceCardResponse.data)
+                                }
                             }
                         }
 
@@ -97,8 +99,16 @@ class RequestLoadingFragment(
                                         realResponseString,
                                         FacePointResponse::class.java
                                     )
-                                    //展示信息
-                                    toRewardsResult(facePointResponse.data)
+                                    if(facePointResponse.data == null) {
+                                        activity?.runOnUiThread {
+                                            Toast.makeText(context, "${facePointResponse.msg}", Toast.LENGTH_SHORT)
+                                                .show()
+                                            (activity as MainActivity).backToMain()
+                                        }
+                                    } else {
+                                        //展示信息
+                                        toRewardsResult(facePointResponse.data)
+                                    }
                                 }
                             }
 

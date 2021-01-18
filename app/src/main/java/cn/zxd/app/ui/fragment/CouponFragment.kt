@@ -2,14 +2,11 @@ package cn.zxd.app.ui.fragment
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.util.Log
 import android.view.View
 import cn.zxd.app.R
 import cn.zxd.app.databinding.FragmentCouponBinding
-import cn.zxd.app.net.CouponResponse
 import cn.zxd.app.net.CouponResponseData
 import cn.zxd.app.ui.MainActivity
-import cn.zxd.app.ui.view.countdown.CountDownView
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 

@@ -16,6 +16,7 @@ object GlobalExceptionHandler : UncaughtExceptionHandler {
     }
 
     private fun handleException(e: Throwable): Boolean {
+        e.printStackTrace()
         return true
     }
 

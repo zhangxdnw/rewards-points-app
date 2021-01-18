@@ -21,6 +21,7 @@ import cn.zxd.app.ui.fragment.FaceDetectFragment
 import cn.zxd.app.ui.fragment.MainFragment
 import cn.zxd.app.ui.fragment.RewardsFragment
 import cn.zxd.app.ui.view.CoverDrawable
+import cn.zxd.app.ui.view.face.model.DrawInfo
 import cn.zxd.app.ui.view.face.util.DrawHelper
 import cn.zxd.app.work.*
 import com.alibaba.fastjson.JSON
@@ -42,10 +43,16 @@ class MainActivity : BaseActivity() {
     private var clickCount = 0
 
     val frameMode = ImiDevice.getInstance().getCurrentFrameMode(ImiDevice.ImiStreamType.COLOR)
-    val drawHelper = DrawHelper(960, 720, 960, 720, 0, 0, false, false, false)
+//    val drawHelper = DrawHelper(640, 480, 640, 480, 0, 0, false, false, false)
 
-    val faceDelay = 5000L
+    var needFace = true
+    set(value) {
+        FaceDetectWork.needFace = value
+    }
+
     var firstFace = 0L
+    var lastFace = 0L
+    var faceCount = 0
     var sharedPreferences: SharedPreferences? = null
     var serverData: Advertisement? = null
 
@@ -72,7 +79,7 @@ class MainActivity : BaseActivity() {
         if (serverData != null) {
             Glide.with(this).load(serverData!!.bottom.path).into(dataBinding.ivBottomBanner)
         }
-        dataBinding.vMask.background = CoverDrawable(ColorDrawable(Color.WHITE), 480, 300, 200)
+        dataBinding.vMask.background = CoverDrawable(ColorDrawable(Color.WHITE), 320, 240, 150)
         EventBus.getDefault().register(this)
 
         FaceDetectWork.detectInit()
@@ -101,9 +108,7 @@ class MainActivity : BaseActivity() {
         super.onStop()
         FaceDetectWork.canceled = true
         FaceDetectWork.cameraDeInit()
-        FaceDetectWork.detectDeInit()
     }
-
 
     fun clickToSettings(view: View) {
         clickCount++
@@ -173,20 +178,41 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    val getFaceCount = 20;
-    var countIndex = 0;
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onDrawFace(previewData: PreviewData) {
-        if (dataBinding.vMask.visibility == View.VISIBLE) {
-            Log.d("MainActivity", "get face")
-            countIndex++;
-            if (countIndex == getFaceCount) {
-                FaceDetectWork.canceled = true
+        if (needFace) {
+            if (dataBinding.vMask.visibility == View.VISIBLE) {
+                Log.d("MainActivity", "get face to upload")
+                needFace = false
+                Thread.sleep(500)
                 EventBus.getDefault().post(SendData(previewData.data, previewData.faces[0]))
+            } else {
+                Log.d("MainActivity", "get face")
+                if (firstFace < 0) {
+                    firstFace = System.currentTimeMillis()
+                    lastFace = firstFace
+                    faceCount = 1
+                } else {
+                    if (System.currentTimeMillis() - lastFace > 200) {
+                        //200毫秒没有人脸 重新计算
+                        firstFace = System.currentTimeMillis()
+                        lastFace = firstFace
+                        faceCount = 1
+                    } else {
+                        lastFace = System.currentTimeMillis()
+                        faceCount++
+                    }
+                }
+                if (faceCount >= 10) {
+                    Log.d("MainActivity", "get face to card")
+                    faceCount = 0
+                    firstFace = 0
+                    lastFace = 0
+                    needFace = false
+                    MediaPlayer.create(this, R.raw.welcome).start()
+                    transFragment(couponFragment)
+                }
             }
-        }else {
-            Log.d("MainActivity", "onDrawFace ignore")
         }
     }
 

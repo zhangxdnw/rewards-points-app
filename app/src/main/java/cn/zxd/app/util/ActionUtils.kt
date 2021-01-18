@@ -39,7 +39,7 @@ object ActionUtils {
                             .putString("advertise_server_data", JSON.toJSONString(adResponse.data))
                             .apply()
                     } else {
-                        Toast.makeText(application, adResponse.message, Toast.LENGTH_LONG).show()
+                        Toast.makeText(application, adResponse.msg, Toast.LENGTH_LONG).show()
                     }
                 } ?: let { Log.d(TAG, "获取广告信息返回为空") }
             }
@@ -64,7 +64,7 @@ object ActionUtils {
                             .putString("coupon_server_data", JSON.toJSONString(couponResponse.data))
                             .apply()
                     } else {
-                        Toast.makeText(application, couponResponse.message, Toast.LENGTH_LONG)
+                        Toast.makeText(application, couponResponse.msg, Toast.LENGTH_LONG)
                             .show()
                     }
                 }

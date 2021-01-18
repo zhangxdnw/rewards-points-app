@@ -6,6 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
+import cn.zxd.app.R
+import cn.zxd.app.ui.MainActivity
+import cn.zxd.app.ui.view.countdown.DigitCountDownView
 
 /**
  * 封装一个有懒加载的 Fragment
@@ -47,6 +50,13 @@ abstract class BaseFragment<T : ViewBinding>(private val layoutId: Int) : Fragme
         super.onResume()
         //在 onResume 进行数据懒加载
         initLoadData()
+        val view = _binding?.root?.findViewById(R.id.dcdv_countDown) as DigitCountDownView?
+        if (view != null) {
+            view.start()
+            view.setCountDownTimerListener {
+                (activity as MainActivity).backToMain()
+            }
+        }
     }
 
     private fun initLoadData() {

@@ -17,6 +17,7 @@ import java.nio.ByteBuffer
 object FaceDetectWork {
 
     var canceled: Boolean = false
+    var needFace = true
     private val faceEngine = FaceEngine()
 
     fun cameraInit(listener: ImiDevice.OpenDeviceListener) {
@@ -76,34 +77,33 @@ object FaceDetectWork {
                 ImiDevice.getInstance().readNextFrame(ImiDevice.ImiStreamType.COLOR, 50)
             if (colorFrame != null) {
                 EventBus.getDefault().post(CameraFrame(0, colorFrame, System.currentTimeMillis()))
-//                Log.d("FaceDetectWork", "getImage")
-                val data: ByteBuffer? = clone(colorFrame.data)
-                if (data != null) {
-                    val byteArray = ByteArray(data.remaining())
-                    data.get(byteArray, 0, byteArray.size)
-//                    Log.d("FaceDetectWork", "copy RGB data")
-//                    EventBus.getDefault().post(PreviewData(byteArray, System.currentTimeMillis()))
-                    val code = faceEngine.detectFaces(
-                        byteArray,
-                        colorFrame.width,
-                        colorFrame.height,
-                        FaceEngine.CP_PAF_BGR24,
-                        faceInfoList
-                    )
-//                    Log.d("FaceDetectWork", "detectFaces result:$code")
-                    if (code == ErrorInfo.MOK && faceInfoList.isNotEmpty()) {
-                        val rect = faceInfoList[0].rect
-                        if ((rect.bottom - rect.top) * (rect.right - rect.left) >= 960 * 720 / 36)
-                            EventBus.getDefault()
-                                .post(
-                                    PreviewData(
-                                        byteArray,
-                                        faceInfoList,
-                                        System.currentTimeMillis()
+                if (needFace) {
+                    val data: ByteBuffer? = clone(colorFrame.data)
+                    if (data != null) {
+                        val byteArray = ByteArray(data.remaining())
+                        data.get(byteArray, 0, byteArray.size)
+                        //处理区域
+                        val code = faceEngine.detectFaces(
+                            byteArray,
+                            colorFrame.width,
+                            colorFrame.height,
+                            FaceEngine.CP_PAF_BGR24,
+                            faceInfoList
+                        )
+                        if (code == ErrorInfo.MOK && faceInfoList.isNotEmpty()) {
+                            val rect = faceInfoList[0].rect
+                            if ((rect.bottom - rect.top) * (rect.right - rect.left) >= 640 * 480 / 25)
+                                EventBus.getDefault()
+                                    .post(
+                                        PreviewData(
+                                            byteArray,
+                                            faceInfoList,
+                                            System.currentTimeMillis()
+                                        )
                                     )
-                                )
-                    } else {
-                        continue
+                        } else {
+                            continue
+                        }
                     }
                 }
             }

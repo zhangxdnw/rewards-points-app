@@ -44,7 +44,7 @@ object ApiUtils {
 
 open class Request(val equipmentId: String)
 
-open class Response<T>(var code: Int = -1, val message: String, val data: T)
+open class Response<T>(var code: Int = -1, val msg: String, val data: T)
 
 //广告接口
 class AdvertiseRequest(equipmentId: String, var t: Int = 0) : Request(equipmentId)

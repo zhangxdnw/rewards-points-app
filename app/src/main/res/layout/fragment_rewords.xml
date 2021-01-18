@@ -10,6 +10,12 @@
         android:layout_margin="16dp"
         android:background="@android:color/white">
 
+        <cn.zxd.app.ui.view.countdown.DigitCountDownView
+            android:id="@+id/dcdv_countDown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true" />
+
         <ImageView
             android:id="@+id/iv_git"
             android:layout_width="100dp"
