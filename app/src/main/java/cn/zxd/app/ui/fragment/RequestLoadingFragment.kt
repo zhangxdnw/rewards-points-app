@@ -77,12 +77,13 @@ class RequestLoadingFragment(
             0 -> {
                 val pointInfo = data as FacePointPushData
                 GlobalScope.async {
+                    val bitmap = BitmapUtils.createMyBitmap(imageData, 640, 480)
                     val request = FacePointRequest(
                         getSerial(),
                         pointInfo.orderNum,
                         pointInfo.totalPrice,
                         pointInfo.shopCode,
-                        Base64Utils.encode(imageData)
+                        BitmapUtils.bitmapToBase64(bitmap)
                     )
                     ActionUtils.doRequestFacePoint(
                         request, object : Callback {
