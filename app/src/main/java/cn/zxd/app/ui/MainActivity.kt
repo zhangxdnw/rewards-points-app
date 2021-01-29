@@ -13,20 +13,19 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import cn.zxd.app.R
-import cn.zxd.app.bean.Advertisement
 import cn.zxd.app.databinding.ActivityMainBinding
+import cn.zxd.app.net.AdvertiseResponseData
 import cn.zxd.app.net.FacePointPushData
 import cn.zxd.app.ui.fragment.CouponFragment
 import cn.zxd.app.ui.fragment.FaceDetectFragment
 import cn.zxd.app.ui.fragment.MainFragment
 import cn.zxd.app.ui.fragment.RewardsFragment
 import cn.zxd.app.ui.view.CoverDrawable
-import cn.zxd.app.ui.view.face.model.DrawInfo
-import cn.zxd.app.ui.view.face.util.DrawHelper
 import cn.zxd.app.work.*
 import com.alibaba.fastjson.JSON
 import com.bumptech.glide.Glide
 import com.hjimi.api.iminect.ImiDevice
+import com.hjimi.api.iminect.ImiFrameMode
 import com.hjimi.api.iminect.ImiPixelFormat
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -54,7 +53,7 @@ class MainActivity : BaseActivity() {
     var lastFace = 0L
     var faceCount = 0
     var sharedPreferences: SharedPreferences? = null
-    var serverData: Advertisement? = null
+    var serverData: List<AdvertiseResponseData>? = null
 
     val mainFragment = MainFragment()
     val couponFragment = CouponFragment()
@@ -70,14 +69,14 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         dataBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(dataBinding.root)
-        sharedPreferences = getSharedPreferences("app_data", MODE_PRIVATE)
-        val serverDataStr = sharedPreferences?.getString("ServerData", "")
-        serverData = if (!serverDataStr.isNullOrEmpty()) JSON.parseObject(
+        sharedPreferences = getSharedPreferences("server_response", MODE_PRIVATE)
+        val serverDataStr = sharedPreferences?.getString("advertise_server_data", "")
+        serverData = if (!serverDataStr.isNullOrEmpty()) JSON.parseArray(
             serverDataStr,
-            Advertisement::class.java
+            AdvertiseResponseData::class.java
         ) else null
         if (serverData != null) {
-            Glide.with(this).load(serverData!!.bottom.path).into(dataBinding.ivBottomBanner)
+            Glide.with(this).load(serverData!![0].bottom[0].url).into(dataBinding.ivBottomBanner)
         }
         dataBinding.vMask.background = CoverDrawable(ColorDrawable(Color.WHITE), 320, 240, 150)
         EventBus.getDefault().register(this)

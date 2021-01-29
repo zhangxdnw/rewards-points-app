@@ -85,3 +85,5 @@
 1. app内置/system/priv-app，使用platform签名，构建脚本(Android.mk)
 2. app进程保活白名单
 3. app反射调用系统API隐藏底部虚拟按键
+
+

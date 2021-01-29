@@ -62,7 +62,7 @@ data class AdvertiseResponseData(
     val center: List<AdvertiseInformation>,
     val name: String,
     val id: Int,
-    val describe: String,
+    val describe: String?,
     val order: Int
 )
 

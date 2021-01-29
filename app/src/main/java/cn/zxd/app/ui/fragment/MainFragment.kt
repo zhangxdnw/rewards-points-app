@@ -4,10 +4,8 @@ import android.view.View
 import cn.zxd.app.R
 import cn.zxd.app.banner.ImageBannerAdapter
 import cn.zxd.app.banner.ImageDataBean
-import cn.zxd.app.bean.Advertisement
 import cn.zxd.app.databinding.FragmentMainBinding
 import cn.zxd.app.ui.MainActivity
-import com.alibaba.fastjson.JSON
 
 class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
 
@@ -27,8 +25,8 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
             dataList.add(ImageDataBean(1, 0, R.drawable.image1, ""))
             binding.bAd.adapter.notifyDataSetChanged()
         } else {
-            for (ad in serverData.top.adList) {
-                dataList.add(ImageDataBean(1, 1, 0, ad.path))
+            for (ad in serverData[0].center) {
+                dataList.add(ImageDataBean(1, 1, 0, ad.url))
             }
         }
     }
