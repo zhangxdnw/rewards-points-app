@@ -38,7 +38,7 @@ class RequestLoadingFragment(
             1 -> {
                 val couponInfo = data as CouponResponseData
                 GlobalScope.async {
-                    val bitmap = BitmapUtils.createMyBitmap(imageData, 640, 480)
+                    val bitmap = BitmapUtils.createMyBitmap(imageData, 300, 300)
                     val request = FaceCardRequest(
                         getSerial(),
                         couponInfo.cardId,
@@ -77,7 +77,7 @@ class RequestLoadingFragment(
             0 -> {
                 val pointInfo = data as FacePointPushData
                 GlobalScope.async {
-                    val bitmap = BitmapUtils.createMyBitmap(imageData, 640, 480)
+                    val bitmap = BitmapUtils.createMyBitmap(imageData, 300, 300)
                     val request = FacePointRequest(
                         getSerial(),
                         pointInfo.orderNum,

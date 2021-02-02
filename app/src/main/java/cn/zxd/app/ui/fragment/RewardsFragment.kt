@@ -36,11 +36,11 @@ class RewardsFragment : BaseFragment<FragmentRewordsBinding>(R.layout.fragment_r
         val sharedPreferences=activity?.getSharedPreferences("server_response", Context.MODE_PRIVATE)
         val dataStr = sharedPreferences?.getString("server_config", "")
         val configData = Gson().fromJson(dataStr, AppConfigResponseData::class.java)
-        binding.tvUserPermission.text = configData.protocolTip
+        binding.tvUserPermission.text = configData?.protocolTip
         binding.tvUserPermission.setOnClickListener {
-            if (!configData.protocolUrl.isNullOrEmpty()) {
+            if (!configData?.protocolUrl.isNullOrEmpty()) {
                 val intent = Intent(activity, WebViewActivity::class.java)
-                intent.putExtra("url", configData.protocolUrl)
+                intent.putExtra("url", configData?.protocolUrl)
                 startActivity(intent)
             }
         }

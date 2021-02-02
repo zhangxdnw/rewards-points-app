@@ -33,11 +33,14 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
 
     override fun onResume() {
         super.onResume()
+        if(activity == null) return
+        (activity as MainActivity).faceCount = 0
         (activity as MainActivity).needFace = true
     }
 
     override fun onPause() {
         super.onPause()
+        if(activity == null) return
         (activity as MainActivity).needFace = false
     }
 

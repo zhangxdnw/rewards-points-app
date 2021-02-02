@@ -39,6 +39,7 @@ class FaceDetectFragment(private val line: Int, private val data: Any) :
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun sendData(sendData: SendData) {
+        if (activity == null) return
         (activity as MainActivity).transFragment(
             RequestLoadingFragment(
                 line,

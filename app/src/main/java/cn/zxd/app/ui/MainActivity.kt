@@ -183,7 +183,7 @@ class MainActivity : BaseActivity() {
             if (dataBinding.vMask.visibility == View.VISIBLE) {
                 Log.d("MainActivity", "get face to upload")
                 needFace = false
-                Thread.sleep(500)
+                Thread.sleep(1000)
                 EventBus.getDefault().post(SendData(previewData.data, previewData.faces[0]))
             } else {
                 Log.d("MainActivity", "get face")
@@ -220,10 +220,5 @@ class MainActivity : BaseActivity() {
         MediaPlayer.create(this, R.raw.dingding).start()
         rewardsFragment.info = FacePointPushData.fromJsonObject(data.message)
         transFragment(rewardsFragment)
-    }
-
-    fun clickToCollectCoupon(view: View) {
-        MediaPlayer.create(this, R.raw.welcome).start()
-        transFragment(couponFragment)
     }
 }

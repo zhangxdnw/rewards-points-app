@@ -1,8 +1,11 @@
 package cn.zxd.app.work
 
+import android.graphics.Bitmap
+import android.graphics.Rect
 import android.util.Log
 import android.widget.Toast
 import cn.zxd.app.AppApplication
+import cn.zxd.app.util.BitmapUtils
 import com.arcsoft.face.ErrorInfo
 import com.arcsoft.face.FaceEngine
 import com.arcsoft.face.FaceInfo
@@ -82,25 +85,25 @@ object FaceDetectWork {
                     if (data != null) {
                         val byteArray = ByteArray(data.remaining())
                         data.get(byteArray, 0, byteArray.size)
+                        //裁剪
+                        val interest = rgbCut(byteArray, 640, 480, Rect(170, 90, 470, 390))
                         //处理区域
                         val code = faceEngine.detectFaces(
-                            byteArray,
-                            colorFrame.width,
-                            colorFrame.height,
+                            interest,
+                            300,
+                            300,
                             FaceEngine.CP_PAF_BGR24,
                             faceInfoList
                         )
                         if (code == ErrorInfo.MOK && faceInfoList.isNotEmpty()) {
-                            val rect = faceInfoList[0].rect
-                            if ((rect.bottom - rect.top) * (rect.right - rect.left) >= 640 * 480 / 25)
-                                EventBus.getDefault()
-                                    .post(
-                                        PreviewData(
-                                            byteArray,
-                                            faceInfoList,
-                                            System.currentTimeMillis()
-                                        )
+                            EventBus.getDefault()
+                                .post(
+                                    PreviewData(
+                                        interest,
+                                        faceInfoList,
+                                        System.currentTimeMillis()
                                     )
+                                )
                         } else {
                             continue
                         }
@@ -112,5 +115,21 @@ object FaceDetectWork {
             ImiDevice.ImiStreamType.COLOR.toNative()
                     and ImiDevice.ImiStreamType.DEPTH.toNative() and ImiDevice.ImiStreamType.IR.toNative()
         )
+    }
+
+    fun rgbCut(source: ByteArray, sourceWidth: Int, sourceHeight: Int, rect: Rect): ByteArray {
+        val height = rect.bottom - rect.top
+        val width = rect.right - rect.left
+        val retArray = ByteArray(width * height * 3)
+        var index = 0;
+        for (j in rect.top until rect.bottom) {
+            for (i in rect.left until rect.right) {
+                retArray[index * 3] = source[(j * sourceWidth + i) * 3]
+                retArray[index * 3 + 1] = source[(j * sourceWidth + i) * 3 + 1]
+                retArray[index * 3 + 2] = source[(j * sourceWidth + i) * 3 + 2]
+                index++
+            }
+        }
+        return retArray
     }
 }
