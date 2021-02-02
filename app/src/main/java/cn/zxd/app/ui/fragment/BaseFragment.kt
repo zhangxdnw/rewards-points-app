@@ -54,9 +54,17 @@ abstract class BaseFragment<T : ViewBinding>(private val layoutId: Int) : Fragme
         if (view != null) {
             view.start()
             view.setCountDownTimerListener {
-                (activity as MainActivity).backToMain()
+                if(activity != null) {
+                    (activity as MainActivity).backToMain()
+                }
             }
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        val view = _binding?.root?.findViewById(R.id.dcdv_countDown) as DigitCountDownView?
+        view?.cancel()
     }
 
     private fun initLoadData() {

@@ -3,10 +3,18 @@ plugins {
     id 'kotlin-android'
 }
 
-def app_build_version = "1.0.0"
-def app_build_code = 1
+def app_build_version = "1.0.1"
+def app_build_code = 2
 
 android {
+    signingConfigs {
+        release {
+            storeFile file('sign/platform.keystore')
+            storePassword 'android'
+            keyAlias 'platform'
+            keyPassword 'android'
+        }
+    }
     compileSdkVersion 30
 
     defaultConfig {
@@ -36,7 +44,8 @@ android {
         release {
             manifestPlaceholders = [BUGLY_APP_CHANNEL : "release",
                                     BUGLY_ENABLE_DEBUG: false]
-            minifyEnabled true
+            signingConfig signingConfigs.release
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
