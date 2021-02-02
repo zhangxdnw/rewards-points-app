@@ -187,7 +187,7 @@ class MainActivity : BaseActivity() {
                 EventBus.getDefault().post(SendData(previewData.data, previewData.faces[0]))
             } else {
                 Log.d("MainActivity", "get face")
-                if (firstFace < 0) {
+                if (firstFace <= 0) {
                     firstFace = System.currentTimeMillis()
                     lastFace = firstFace
                     faceCount = 1
@@ -202,7 +202,7 @@ class MainActivity : BaseActivity() {
                         faceCount++
                     }
                 }
-                if (faceCount >= 10) {
+                if (faceCount >= 20) {
                     Log.d("MainActivity", "get face to card")
                     faceCount = 0
                     firstFace = 0
