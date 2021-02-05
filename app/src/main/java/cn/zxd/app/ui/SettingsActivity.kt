@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import cn.zxd.app.databinding.ActivitySettingsBinding
 import cn.zxd.app.ui.view.recycler.HorizontalDividerItemDecoration
+import kotlin.system.exitProcess
 
 class SettingsActivity : BaseActivity() {
 
@@ -35,7 +36,8 @@ class SettingsActivity : BaseActivity() {
                             startActivity(Intent(view?.context, SeniorSettingsActivity::class.java))
                         }
                         2 -> {
-
+                            sendBroadcast(Intent("android.intent.action.STATUSBAR_VISIBLE").putExtra("visible", true))
+                            startActivity(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME))
                         }
                     }
                 }

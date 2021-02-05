@@ -11,6 +11,7 @@
         android:background="@android:color/white">
 
         <cn.zxd.app.ui.view.countdown.DigitCountDownView
+            android:layout_marginRight="8dp"
             android:id="@+id/dcdv_countDown"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

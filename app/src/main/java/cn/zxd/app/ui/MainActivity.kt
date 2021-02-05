@@ -3,6 +3,7 @@ package cn.zxd.app.ui
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
+import android.graphics.Rect
 import android.graphics.drawable.ColorDrawable
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -38,16 +39,17 @@ import java.util.*
 class MainActivity : BaseActivity() {
 
     lateinit var dataBinding: ActivityMainBinding
-    private val clickMax = 1
+    private val clickMax = 10
     private var clickCount = 0
 
     val frameMode = ImiDevice.getInstance().getCurrentFrameMode(ImiDevice.ImiStreamType.COLOR)
 //    val drawHelper = DrawHelper(640, 480, 640, 480, 0, 0, false, false, false)
 
-    var needFace = true
-    set(value) {
-        FaceDetectWork.needFace = value
-    }
+    var needFace = false
+        set(value) {
+            FaceDetectWork.needFace = value
+            field = value
+        }
 
     var firstFace = 0L
     var lastFace = 0L
@@ -58,6 +60,8 @@ class MainActivity : BaseActivity() {
     val mainFragment = MainFragment()
     val couponFragment = CouponFragment()
     val rewardsFragment = RewardsFragment()
+
+    val faceCenterRect = Rect(75,75,225,225)
 
     inline fun FragmentManager.inTransaction(func: FragmentTransaction.() -> Unit) {
         val fragmentTransaction = beginTransaction()
@@ -76,7 +80,10 @@ class MainActivity : BaseActivity() {
             AdvertiseResponseData::class.java
         ) else null
         if (serverData != null) {
-            Glide.with(this).load(serverData!![0].bottom[0].url).into(dataBinding.ivBottomBanner)
+            if (serverData!!.isNotEmpty() && serverData!![0].bottom.isNotEmpty()) {
+                Glide.with(this).load(serverData!![0].bottom[0].url)
+                    .into(dataBinding.ivBottomBanner)
+            }
         }
         dataBinding.vMask.background = CoverDrawable(ColorDrawable(Color.WHITE), 320, 240, 150)
         EventBus.getDefault().register(this)
@@ -150,7 +157,12 @@ class MainActivity : BaseActivity() {
     }
 
     fun transFragment(fragment: Fragment) {
-        supportFragmentManager.inTransaction { replace(R.id.rl_topBanner, fragment) }
+        if(supportFragmentManager.findFragmentById(R.id.rl_topBanner) == fragment) {
+            fragment.onPause()
+            fragment.onResume()
+        } else {
+            supportFragmentManager.inTransaction { replace(R.id.rl_topBanner, fragment) }
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN_ORDERED)
@@ -181,10 +193,15 @@ class MainActivity : BaseActivity() {
     fun onDrawFace(previewData: PreviewData) {
         if (needFace) {
             if (dataBinding.vMask.visibility == View.VISIBLE) {
-                Log.d("MainActivity", "get face to upload")
-                needFace = false
-                Thread.sleep(1000)
-                EventBus.getDefault().post(SendData(previewData.data, previewData.faces[0]))
+                val area = (previewData.faces[0].rect.right-previewData.faces[0].rect.left) *
+                        (previewData.faces[0].rect.bottom - previewData.faces[0].rect.top)
+                if (faceCenterRect.contains(previewData.faces[0].rect.centerX(),previewData.faces[0].rect.centerY())
+                    && (area >= 120 * 120) && area <= 180 * 180) {
+                    Log.d("MainActivity", "get face to upload${previewData.faces}")
+                    needFace = false
+                    Thread.sleep(1000)
+                    EventBus.getDefault().post(SendData(previewData.data, previewData.faces[0]))
+                }
             } else {
                 Log.d("MainActivity", "get face")
                 if (firstFace <= 0) {
@@ -202,7 +219,7 @@ class MainActivity : BaseActivity() {
                         faceCount++
                     }
                 }
-                if (faceCount >= 20) {
+                if (faceCount >= 10) {
                     Log.d("MainActivity", "get face to card")
                     faceCount = 0
                     firstFace = 0

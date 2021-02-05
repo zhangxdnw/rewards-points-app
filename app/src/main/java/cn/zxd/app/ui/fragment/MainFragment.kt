@@ -1,5 +1,6 @@
 package cn.zxd.app.ui.fragment
 
+import android.util.Log
 import android.view.View
 import cn.zxd.app.R
 import cn.zxd.app.banner.ImageBannerAdapter
@@ -21,7 +22,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
 
     override fun loadDate() {
         val serverData = (activity as MainActivity).serverData
-        if (serverData == null) {
+        if (serverData == null || serverData.isEmpty() || serverData[0].center.isEmpty()) {
             dataList.add(ImageDataBean(1, 0, R.drawable.image1, ""))
             binding.bAd.adapter.notifyDataSetChanged()
         } else {
@@ -33,14 +34,18 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
 
     override fun onResume() {
         super.onResume()
-        if(activity == null) return
-        (activity as MainActivity).faceCount = 0
-        (activity as MainActivity).needFace = true
+        binding.root.postDelayed({
+            Log.d("MainFragment", "Start Detect")
+            if (activity != null) {
+                (activity as MainActivity).faceCount = 0
+                (activity as MainActivity).needFace = true
+            }
+        }, 10000)
     }
 
     override fun onPause() {
         super.onPause()
-        if(activity == null) return
+        if (activity == null) return
         (activity as MainActivity).needFace = false
     }
 

@@ -1,11 +1,9 @@
 package cn.zxd.app.work
 
-import android.graphics.Bitmap
 import android.graphics.Rect
 import android.util.Log
 import android.widget.Toast
 import cn.zxd.app.AppApplication
-import cn.zxd.app.util.BitmapUtils
 import com.arcsoft.face.ErrorInfo
 import com.arcsoft.face.FaceEngine
 import com.arcsoft.face.FaceInfo
@@ -74,7 +72,7 @@ object FaceDetectWork {
             ImiDevice.ImiStreamType.COLOR.toNative()
                     and ImiDevice.ImiStreamType.IR.toNative()
         )
-        val faceInfoList: List<FaceInfo> = ArrayList()
+
         while (!canceled) {
             val colorFrame =
                 ImiDevice.getInstance().readNextFrame(ImiDevice.ImiStreamType.COLOR, 50)
@@ -88,6 +86,7 @@ object FaceDetectWork {
                         //裁剪
                         val interest = rgbCut(byteArray, 640, 480, Rect(170, 90, 470, 390))
                         //处理区域
+                        val faceInfoList: List<FaceInfo> = ArrayList()
                         val code = faceEngine.detectFaces(
                             interest,
                             300,

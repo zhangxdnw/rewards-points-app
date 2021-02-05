@@ -1,7 +1,6 @@
 package cn.zxd.app
 
 import android.app.Application
-import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import cn.zxd.app.net.ApiUtils
@@ -27,6 +26,7 @@ class AppApplication : Application() {
         ActionUtils.doRequestConfig()
         NettyClient.start(ApiUtils.baseUrl)
         ImiNect.initialize()
+        sendBroadcast(Intent("android.intent.action.STATUSBAR_VISIBLE").putExtra("visible", false))
     }
 
     override fun onTerminate() {
