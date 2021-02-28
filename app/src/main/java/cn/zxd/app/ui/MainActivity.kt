@@ -114,6 +114,7 @@ class MainActivity : BaseActivity() {
                             pm.reboot("")
                         }
                         .setNegativeButton("取消", null)
+                        .setCancelable(false)
                         .create().show()
                 }
             }
