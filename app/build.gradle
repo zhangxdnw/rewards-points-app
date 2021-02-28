@@ -3,13 +3,13 @@ plugins {
     id 'kotlin-android'
 }
 
-def app_build_version = "1.0.1"
-def app_build_code = 2
+def app_build_version = "1.0.3"
+def app_build_code = 4
 
 android {
     signingConfigs {
         release {
-            storeFile file('sign/platform.keystore')
+            storeFile file('../sign/platform.keystore')
             storePassword 'android'
             keyAlias 'platform'
             keyPassword 'android'
@@ -38,6 +38,7 @@ android {
 
     buildTypes {
         debug {
+            signingConfig signingConfigs.release
             manifestPlaceholders = [BUGLY_APP_CHANNEL : "debug",
                                     BUGLY_ENABLE_DEBUG: true]
         }

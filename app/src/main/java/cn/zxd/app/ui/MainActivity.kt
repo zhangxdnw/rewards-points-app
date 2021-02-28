@@ -7,9 +7,10 @@ import android.graphics.Rect
 import android.graphics.drawable.ColorDrawable
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.PowerManager
 import android.util.Log
 import android.view.View
-import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
@@ -26,7 +27,6 @@ import cn.zxd.app.work.*
 import com.alibaba.fastjson.JSON
 import com.bumptech.glide.Glide
 import com.hjimi.api.iminect.ImiDevice
-import com.hjimi.api.iminect.ImiFrameMode
 import com.hjimi.api.iminect.ImiPixelFormat
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -61,7 +61,7 @@ class MainActivity : BaseActivity() {
     val couponFragment = CouponFragment()
     val rewardsFragment = RewardsFragment()
 
-    val faceCenterRect = Rect(75,75,225,225)
+    val faceCenterRect = Rect(75, 75, 225, 225)
 
     inline fun FragmentManager.inTransaction(func: FragmentTransaction.() -> Unit) {
         val fragmentTransaction = beginTransaction()
@@ -104,7 +104,18 @@ class MainActivity : BaseActivity() {
 
             override fun onOpenDeviceFailed(p0: String?) {
                 Log.e("FaceDetectWork", "onOpenDeviceFailed:$p0")
-                Toast.makeText(this@MainActivity.applicationContext, p0, Toast.LENGTH_SHORT).show()
+                runOnUiThread {
+                    AlertDialog.Builder(this@MainActivity).setTitle("摄像头初始化失败")
+                        .setMessage("是否重启设备？").setPositiveButton(
+                            "重启"
+                        ) { _, _ ->
+                            //重启
+                            val pm = getSystemService(POWER_SERVICE) as PowerManager
+                            pm.reboot("")
+                        }
+                        .setNegativeButton("取消", null)
+                        .create().show()
+                }
             }
 
         })
@@ -195,7 +206,10 @@ class MainActivity : BaseActivity() {
             if (dataBinding.vMask.visibility == View.VISIBLE) {
                 val area = (previewData.faces[0].rect.right-previewData.faces[0].rect.left) *
                         (previewData.faces[0].rect.bottom - previewData.faces[0].rect.top)
-                if (faceCenterRect.contains(previewData.faces[0].rect.centerX(),previewData.faces[0].rect.centerY())
+                if (faceCenterRect.contains(
+                        previewData.faces[0].rect.centerX(),
+                        previewData.faces[0].rect.centerY()
+                    )
                     && (area >= 120 * 120) && area <= 180 * 180) {
                     Log.d("MainActivity", "get face to upload${previewData.faces}")
                     needFace = false
