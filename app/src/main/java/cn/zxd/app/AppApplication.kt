@@ -7,6 +7,7 @@ import cn.zxd.app.net.ApiUtils
 import cn.zxd.app.net.NettyClient
 import cn.zxd.app.receiver.TimeTickReceiver
 import cn.zxd.app.util.ActionUtils
+import cn.zxd.app.util.ProcessUtils
 import cn.zxd.app.work.FaceDetectWork
 import com.hjimi.api.iminect.ImiNect
 
@@ -19,14 +20,21 @@ class AppApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        instance = this
-        registerReceiver(TimeTickReceiver, IntentFilter(Intent.ACTION_TIME_TICK))
-        ActionUtils.doRequestAdvertise()
-        ActionUtils.doRequestCoupon()
-        ActionUtils.doRequestConfig()
-        NettyClient.start(ApiUtils.baseUrl)
-        ImiNect.initialize()
-        sendBroadcast(Intent("android.intent.action.STATUSBAR_VISIBLE").putExtra("visible", false))
+        if (applicationInfo.packageName == ProcessUtils.getCurrentProcessName(this)) {
+            instance = this
+            registerReceiver(TimeTickReceiver, IntentFilter(Intent.ACTION_TIME_TICK))
+            ActionUtils.doRequestAdvertise()
+            ActionUtils.doRequestCoupon()
+            ActionUtils.doRequestConfig()
+            NettyClient.start(ApiUtils.baseUrl)
+            ImiNect.initialize()
+            sendBroadcast(
+                Intent("android.intent.action.STATUSBAR_VISIBLE").putExtra(
+                    "visible",
+                    false
+                )
+            )
+        }
     }
 
     override fun onTerminate() {

@@ -47,6 +47,6 @@ class SplashActivity : BaseActivity() {
     }
 
     private fun jumpToMain() {
-        window.decorView.postDelayed({ startActivity(Intent(this, MainActivity::class.java)) }, 1000)
+        window.decorView.postDelayed({ startActivity(Intent(this, MainActivity::class.java)) }, 5000)
     }
 }

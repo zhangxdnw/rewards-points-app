@@ -122,6 +122,11 @@ class MainActivity : BaseActivity() {
         })
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        EventBus.getDefault().unregister(this)
+    }
+
     override fun onStop() {
         super.onStop()
         FaceDetectWork.canceled = true
